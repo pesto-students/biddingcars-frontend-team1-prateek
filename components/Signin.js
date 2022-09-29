@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { signin } from '../actions/auth.action';
+import { signup,signin } from '../actions/auth.action';
 import { TextField, Button } from '@mui/material';
-import RightDrawer from './RightDrawer';
+// import RightDrawer from './RightDrawer';
 
-const Signin = () => {
-  const [userName, setUserName] = useState('');
+const Signin = ({createAccount}) => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(signin({ userName, password }));
+    dispatch(signin({ email, password }));
   };
 
   return (
@@ -33,7 +33,7 @@ const Signin = () => {
           <div
             style={{
               width: '100%',
-              height: '35vh',
+              height: '40vh',
               display: 'flex',
               justifyContent: 'space-around',
               alignItems: 'center',
@@ -43,14 +43,15 @@ const Signin = () => {
             <div>
               <TextField
                 id="outlined-basic"
-                label="User-name"
+                label="Email"
                 variant="outlined"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
               <TextField
+                type='password'
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
@@ -59,9 +60,18 @@ const Signin = () => {
               />
             </div>
 
-            <Button type="submit" variant="outlined">
+            <Button type="submit" variant="outlined"
+            sx={{
+                height: '7vh',
+                fontSize: '1.1rem',
+                fontWeight: 500,
+                mx: 3,
+                textTransform: 'capitalize',
+                width: '100px',
+              }}>
               Login
             </Button>
+            {createAccount}
             <a href='#'>Forgot password?</a>
           </div>
         </div>

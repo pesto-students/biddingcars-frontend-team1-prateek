@@ -10,7 +10,7 @@ import Layout from '../components/Layout';
 import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
 import { useEffect } from 'react';
 
-export default function Home() {
+export default function Auctions() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   
@@ -28,7 +28,7 @@ export default function Home() {
       </Head>
 
       <Navbar />
-      <Layout>Hello</Layout>
+      <Layout>Auctions</Layout>
     
     </div>
   );
