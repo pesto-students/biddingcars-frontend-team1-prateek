@@ -6,6 +6,7 @@ const initState = {
   number: null,
   userName: null,
   authenticate: false,
+  message:null,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -18,23 +19,47 @@ export default (state = initState, action) => {
       };
 
       break;
-    case authConstants.LOGIN_SUCCESS:
+    case authConstants.SIGNIN_SUCCESS:
       state = {
         ...state,
         waiting: false,
         userId: 'something',
-        userName: action.payload,
+        message: action.payload,
         authenticate: true,
       };
 
       break;
-    case authConstants.LOGIN_FAILURE:
+    case authConstants.SIGNIN_ERROR:
       state = {
         ...state,
-        waiting: false,
+        message: action.payload,
       };
 
       break;
+      case authConstants.SIGNUP_SUCCESS:
+        state = {
+          ...state,
+          waiting: false,
+          userId: 'something',
+          message: action.payload,
+          authenticate: true,
+        };
+  
+        break;
+      case authConstants.SIGNUP_ERROR:
+        state = {
+          ...state,
+          message: action.payload,
+        };
+  
+      break;
+    
+      case authConstants.SIGNOUT_SUCCESS:
+        state = {
+          ...initState
+        };
+  
+        break;
   }
   return state;
 };

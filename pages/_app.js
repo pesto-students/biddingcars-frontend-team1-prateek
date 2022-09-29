@@ -6,8 +6,40 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Provider } from 'react-redux';
 import store from '../store';
+import { blue, deepOrange, grey } from '@mui/material/colors';
 
 const ColorModeContext = React.createContext({ MyApp: () => {} });
+
+const getDesignTokens = (mode) => ({
+  palette: {
+    mode,
+    ...(mode === 'light'
+      ? {
+          // palette values for light mode
+          primary: blue,
+          divider: blue[200],
+          text: {
+            primary: grey[900],
+            secondary: grey[800],
+          },
+          secondary:blue
+        }
+      : {
+          // palette values for dark mode
+          primary: grey,
+          divider: grey[700],
+          background: {
+            default: grey[900],
+            paper: grey[900],
+          },
+          text: {
+            primary: '#fff',
+            secondary: grey[500],
+          },
+          secondary: blue
+        }),
+  },
+});
 
 export function UISwitch() {
   const theme = useTheme();
@@ -25,7 +57,6 @@ export function UISwitch() {
         p: 1,
       }}
     >
-      
       <IconButton onClick={colorMode.MyApp} color="inherit">
         {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
       </IconButton>
@@ -44,15 +75,7 @@ export default function MyApp({ Component, pageProps }) {
     [],
   );
 
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode],
-  );
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -60,7 +83,6 @@ export default function MyApp({ Component, pageProps }) {
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>
-        {/* <App /> */}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

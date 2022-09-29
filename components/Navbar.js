@@ -14,18 +14,26 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Signin from './Signin';
 import { UISwitch } from '../pages/_app';
+import Signup from './Signup';
+import { signout } from '../actions/auth.action';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 300;
-const navItems = ['Auctions', 'List a Car', 'Dashboard'];
-
+const navItems = [
+  { name: 'Auctions', link: '/auctions' },
+  { name: 'List a car', link: '/list' },
+  { name: 'Dashboard', link: '/dashboard' },
+];
 function Navbar(props) {
+  const router = useRouter();
+  console.log(router.pathname);
   const auth = useSelector((state) => state.auth);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const dispatch = useDispatch();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -42,6 +50,8 @@ function Navbar(props) {
     setState({ ...state, [anchor]: open });
   };
 
+  const [authScreen, setAuthScreen] = React.useState('login');
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 350 }}
@@ -49,7 +59,13 @@ function Navbar(props) {
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
     >
-      <Signin />
+      {authScreen === 'login' ? (
+        <Signin createAccount={<Button onClick={() => setAuthScreen('signup')}>Create account</Button>} />
+      ) : (
+        <Signup login={<Button onClick={() => setAuthScreen('login')}>Already have an account?</Button>} />
+      )}
+
+      {/* <Signup/> */}
       <Divider />
     </Box>
   );
@@ -61,10 +77,10 @@ function Navbar(props) {
       </Typography>
 
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+        {navItems.map((item, i) => (
+          <ListItem key={i} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.name} onClick={() => router.push(item.link)} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -75,45 +91,122 @@ function Navbar(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav" variant=''>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-            BIDDING CARS {auth.userName}
-          </Typography>
-          
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: { xs: 'none', sm: 'space-between' },
+        alignItems: 'center',
+        borderBottom: '1px solid #2196f3',
+        mx: 2,
+        minHeight: '10vh',
+      }}
+    >
+      <Box sx={{}}></Box>
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        edge="start"
+        onClick={handleDrawerToggle}
+        sx={{ display: { sm: 'none' }, px: 2 }}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Typography onClick={()=>router.push('/') } variant="h6" component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },cursor:'pointer' }}>
+        BIDDING CARS {auth.userName}
+      </Typography>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          {navItems.map((item, i) => {
+            if (item.link === router.pathname) {
+              return (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  key={i}
+                  onClick={() => router.push(item.link)}
+                  sx={{
+                    height: '7vh',
+                    fontSize: '1.1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    textTransform: 'capitalize',
+                    width: '120px',
+                  }}
+                >
+                  {item.name}
+                </Button>
+              );
+            } else {
+              return (
+                <Button
+                  
+                  size="large"
+                  key={i}
+                  onClick={() => router.push(item.link)}
+                  sx={{
+                    height: '7vh',
+                    fontSize: '1.1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    textTransform: 'capitalize',
+                    width: '120px',
+                  }}
+                >
+                  {item.name}
+                </Button>
+              );
+            }
+          })}
+        </Box>
+        {auth.authenticate ? (
+          <Box sx={{display:'flex'}}>
+            {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+            <Button
+              onClick={() => dispatch(signout())}
+              variant='outlined'
+              size='large'
+              sx={{
+                height: '7vh',
+                fontSize: '1.1rem',
+                fontWeight: 500,
+                mx: 3,
+                textTransform: 'capitalize',
+                width: '100px',
+              }}
+            >
+              Logout
+            </Button>
           </Box>
+        ) : null}
+        {!auth.authenticate ? (
+          <div>
+            <Button
+              variant='outlined'
+              size='large'
+              sx={{
+                height: '7vh',
+                fontSize: '1.1rem',
+                fontWeight: 500,
+                mx: 3,
+                textTransform: 'capitalize',
+                width: '100px',
+              }}
+              onClick={toggleDrawer('right', true)}
+            >
+              Signin
+            </Button>
 
-          {auth.authenticate ? <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> : null}
-          {!auth.authenticate ? (
-            <div>
-              <Button variant="contained" onClick={toggleDrawer('right', true)}>
-                {'Login'}
-              </Button>
-              <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
-                {list('right')}
-              </Drawer>
-            </div>
-          ) : null}
-          <UISwitch/>
-          <Divider />
-        </Toolbar>
-      </AppBar>
+            <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
+              {list('right')}
+            </Drawer>
+          </div>
+        ) : null}
+      </Box>
+
+      <UISwitch />
+      <Divider />
+
       <Box component="nav">
         <Drawer
           container={container}
