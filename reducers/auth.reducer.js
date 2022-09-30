@@ -23,7 +23,7 @@ export default (state = initState, action) => {
       state = {
         ...state,
         waiting: false,
-        userId: 'something',
+        userId: action.userId,
         message: action.payload,
         authenticate: true,
       };
@@ -40,25 +40,25 @@ export default (state = initState, action) => {
         state = {
           ...state,
           waiting: false,
-          userId: 'something',
+          userId: action.userId,
           message: action.payload,
           authenticate: false,
         };
-  
+
         break;
       case authConstants.SIGNUP_ERROR:
         state = {
           ...state,
           message: action.payload,
         };
-  
+
       break;
-    
+
       case authConstants.SIGNOUT_SUCCESS:
         state = {
           ...initState
         };
-  
+
         break;
   }
   return state;
