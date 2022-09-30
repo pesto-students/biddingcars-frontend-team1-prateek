@@ -1,17 +1,17 @@
 import { authConstants } from './constants';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-
-console.log(firebase);
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// console.log(firebase);
 // Your app's Firebase configuration
 var firebaseConfig = {
-  apiKey: 'AIzaSyDQEo0aBj6UC-FMeV2FbUkDO71Gg4ljQj4',
-  authDomain: 'biddingcars-363616.firebaseapp.com',
-  projectId: 'biddingcars-363616',
-  storageBucket: 'biddingcars-363616.appspot.com',
-  messagingSenderId: '578243658376',
-  appId: '1:578243658376:web:6d384f19b163a47b60553d',
-  measurementId: 'G-G1PK01GE79',
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+  measurementId: process.env.measurementId
 };
 
 if (!firebase.apps.length) {
@@ -27,6 +27,7 @@ export const checkSignin = () => async (dispatch) => {
       if (user) {
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
+          userId:user.email,
           payload: JSON.stringify(user),
         });
       }
@@ -37,7 +38,7 @@ export const checkSignin = () => async (dispatch) => {
 };
 
 export const signup =
-  ({ email, password }) =>
+  ({ email, password,fname,lname }) =>
   async (dispatch) => {
     try {
       firebase
@@ -50,20 +51,34 @@ export const signup =
         })
         .then((dataAfterEmail) => {
           firebase.auth().onAuthStateChanged(function (user) {
-            if (user.emailVerified) {
-              // Email is verified
-              dispatch({
-                type: authConstants.SIGNUP_SUCCESS,
-                payload:
-                  'Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox.',
+              fetch(process.env.addUserEndpoint, {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  firstname: fname,
+                  lastname: lname,
+                  email: email,
+                }),
               });
-            } else {
-              // Email is not verified
-              dispatch({
-                type: authConstants.SIGNUP_ERROR,
-                payload: "Something went wrong, we couldn't create your account. Please try again.",
-              });
-            }
+            // if (user.emailVerified) {
+            //   console.log(user)
+            //   // Emailconsole is verified
+            //   dispatch({
+            //     type: authConstants.SIGNUP_SUCCESS,
+            //     userId:user.email,
+            //     payload:
+            //       'Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox.',
+            //   });
+            // } else {
+            //   // Email is not verified
+            //   dispatch({
+            //     type: authConstants.SIGNUP_ERROR,
+            //     payload: "Something went wrong, we couldn't create your account. Please try again.",
+            //   });
+            // }
           });
         })
         .catch(function (error) {
@@ -93,6 +108,7 @@ export const signin =
           firebase.auth().onAuthStateChanged(function (user) {
             dispatch({
               type: authConstants.SIGNIN_SUCCESS,
+              userId:user.email,
               payload: JSON.stringify(user),
             });
           });
@@ -129,3 +145,56 @@ export const signout = () => async (dispatch) => {
     });
   }
 };
+
+
+export const googleSignIn =
+() =>
+  async (dispatch) => {
+    try {
+
+      const provider = new GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+      .then((result) => {
+
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          // const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          console.log(user)
+          dispatch({
+            type: authConstants.SIGNIN_SUCCESS,
+            userId:user.email,
+            payload: JSON.stringify(user),
+          });
+
+          fetch(process.env.addUserEndpoint, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstname: user.displayName.split(' ')[0],
+              lastname: user.displayName.split(' ')[1]?user.displayName.split(' ')[1]:' ',
+              email: user.email,
+            }),
+          });
+
+        })
+        .catch((error) => {
+          console.log(error)
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.customData.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          dispatch({
+            type: authConstants.SIGNIN_ERROR,
+            payload: errorMessage,
+          });
+        });
+    } catch (err) {
+      dispatch({ type: authConstants.SIGNIN_ERROR, payload: 'Invalid login credentials' });
+    }
+  };

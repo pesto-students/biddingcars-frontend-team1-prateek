@@ -16,7 +16,7 @@ const Signup = ({login}) => {
 
     const handleSubmit = () => {
         if (password === confirmpassword) {
-            dispatch(signup({ email, password }));
+            dispatch(signup({ email, password,fname,lname }));
         } else {
             setAlert('passwords doest not match')
       }

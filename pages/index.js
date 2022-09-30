@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 export default function Home() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
       dispatch(checkSignin());
   }, [])
@@ -28,8 +28,8 @@ export default function Home() {
       </Head>
 
       <Navbar />
-      <Layout>Hello</Layout>
-    
+      <Layout>Hello {auth.userId}</Layout>
+
     </div>
   );
 }
