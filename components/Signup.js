@@ -77,6 +77,7 @@ const Signup = ({login}) => {
                       </div>
                       <div>
               <TextField
+                type='password'
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
@@ -86,6 +87,7 @@ const Signup = ({login}) => {
                       </div>
                       <div>
               <TextField
+                type='password'
                 id="outlined-basic"
                 label="Confirm Password"
                 variant="outlined"

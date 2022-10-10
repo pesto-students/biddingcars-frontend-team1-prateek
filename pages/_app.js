@@ -6,7 +6,10 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Provider } from 'react-redux';
 import store from '../store';
-import { blue, deepOrange, grey } from '@mui/material/colors';
+import { blue, deepOrange, green, grey, lightBlue } from '@mui/material/colors';
+import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import '../styles/globals.css'
 
 const ColorModeContext = React.createContext({ MyApp: () => {} });
 
@@ -20,9 +23,9 @@ const getDesignTokens = (mode) => ({
           divider: blue[200],
           text: {
             primary: grey[900],
-            secondary: grey[800],
+            secondary: grey[600],
           },
-          secondary:blue
+          secondary: blue,
         }
       : {
           // palette values for dark mode
@@ -36,7 +39,7 @@ const getDesignTokens = (mode) => ({
             primary: '#fff',
             secondary: grey[500],
           },
-          secondary: blue
+          secondary: blue,
         }),
   },
 });
@@ -81,7 +84,10 @@ export default function MyApp({ Component, pageProps }) {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <Component {...pageProps} />
+          <Navbar />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </Provider>
       </ThemeProvider>
     </ColorModeContext.Provider>
