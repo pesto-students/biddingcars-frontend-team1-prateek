@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { signup,signin } from '../actions/auth.action';
-import { TextField, Button } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { signup, signin, googleSignIn } from "../actions/auth.action";
+import { TextField, Button } from "@mui/material";
 // import RightDrawer from './RightDrawer';
 
-const Signin = ({createAccount}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Signin = ({ createAccount }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
     dispatch(signin({ email, password }));
   };
-
+  const googleSign = () => {
+    dispatch(googleSignIn());
+  };
   return (
     <div>
       <form
@@ -24,20 +26,20 @@ const Signin = ({createAccount}) => {
       >
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
           }}
         >
           <div
             style={{
-              width: '100%',
-              height: '40vh',
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              flexDirection: 'column',
+              width: "100%",
+              height: "55vh",
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              flexDirection: "column",
             }}
           >
             <div>
@@ -51,7 +53,7 @@ const Signin = ({createAccount}) => {
             </div>
             <div>
               <TextField
-                type='password'
+                type="password"
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
@@ -60,19 +62,35 @@ const Signin = ({createAccount}) => {
               />
             </div>
 
-            <Button type="submit" variant="outlined"
-            sx={{
-                height: '7vh',
-                fontSize: '1.1rem',
+            <Button
+              type="submit"
+              variant="outlined"
+              sx={{
+                height: "7vh",
+                fontSize: "1.1rem",
                 fontWeight: 500,
                 mx: 3,
-                textTransform: 'capitalize',
-                width: '100px',
-              }}>
+                textTransform: "capitalize",
+                width: "100px",
+              }}
+            >
               Login
             </Button>
             {createAccount}
-            <a href='#'>Forgot password?</a>
+            <a href="#">Forgot password?</a>
+            <Button
+              type="submit"
+              onClick={() => {
+                setEmail("dummy@dummy.com");
+                setPassword("dummy123");
+              }}
+              variant="outlined"
+            >
+              Sign In Using Dummy Account
+            </Button>
+            <Button onClick={() => googleSign()} variant="outlined">
+              Sign In With Google
+            </Button>
           </div>
         </div>
       </form>
