@@ -15,6 +15,8 @@ a {
   box-sizing: border-box;
 }
 
+
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: light;
@@ -24,3 +26,18 @@ a {
     background: white;
   }
 } */
+
+input[type='file']{
+  color:transparent;
+  height: 100%;
+  cursor: pointer;
+}
+
+input::file-selector-button {
+  border: none;
+  background-color: transparent;
+  color:transparent;
+
+}
+
+

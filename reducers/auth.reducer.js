@@ -42,7 +42,7 @@ export default (state = initState, action) => {
           waiting: false,
           userId: 'something',
           message: action.payload,
-          authenticate: true,
+          authenticate: false,
         };
   
         break;

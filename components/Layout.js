@@ -8,7 +8,7 @@ export default function Layout({children}) {
   return (
     <React.Fragment>
       <CssBaseline />
-          <Container sx={{marginTop:'70px'}} maxWidth='xl'>
+          <Container sx={{marginTop:'20px'}} maxWidth='false'>
               {children}
               
       </Container>

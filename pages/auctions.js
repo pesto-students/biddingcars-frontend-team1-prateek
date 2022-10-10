@@ -5,19 +5,32 @@ import styles from '../styles/Home.module.css';
 import Test from '../components/Signin';
 import { useSelector, useDispatch } from 'react-redux';
 import RightDrawer from '../components/RightDrawer';
-import { Box, Container } from '@mui/material';
+import { Box, Card, CircularProgress, Paper, Typography } from '@mui/material';
 import Layout from '../components/Layout';
 import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getTimeline } from '../actions/timeline.action';
+import { useRouter } from 'next/router';
 
 export default function Auctions() {
   const auth = useSelector((state) => state.auth);
+  const timeline = useSelector((state) => state.timeline);
+  const router = useRouter();
   const dispatch = useDispatch();
-  
+
+  const [rev, setRev] = useState([]);
+
+  const reduce = (string) => {
+    if (string.length > 60) {
+      
+      return string.split('').splice(0, 50).join('')+'...';
+    }
+    return string
+  };
+
   useEffect(() => {
-      dispatch(checkSignin());
-  }, [])
-  
+    dispatch(getTimeline());
+  }, []);
 
   return (
     <div>
@@ -27,9 +40,101 @@ export default function Auctions() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
-      <Layout>Auctions</Layout>
-    
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', alignItems: 'center' }}>
+        {timeline.waiting ? (
+          <CircularProgress />
+        ) : (
+          timeline.timeline.map((car, index) => (
+            <div key={index}>
+              <Paper
+                onClick={() => {
+                  router.push(`/auction/${car._id}`);
+                }}
+                elevation={5}
+                sx={{
+                  width: { xs: '90vw', sm: '43vw', md: '23vw' },
+                  borderRadius: '10px',
+                  padding: '5px',
+                  marginBottom: '20px',
+                  cursor: 'pointer',
+                }}
+                variant="outlined"
+              >
+                <Box sx={{ width: '100%' }}>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '20px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      src={car.photos[0]}
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      alt={car.modelName}
+                    />
+                    <Paper
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'left',
+                        alignItems: 'center',
+                        height: '35px',
+                        position: 'absolute',
+                        bottom: '0px',
+                        left: '0px',
+                        padding: '10px',
+                        borderRadius: '0px 10px 0px 10px',
+                        color: 'custom',
+                      }}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      🕧 10 days &nbsp;Rs 54,00,000
+                    </Paper>
+                  </Box>
+                  <Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'left',
+                        alignItems: 'center',
+                        height: '35px',
+                        background: 'primary',
+                        pt: '20px',
+                        px: '10px',
+                        borderRadius: '0px 10px 0px 0px',
+                        color: 'text.primary',
+                      }}
+                    >
+                      {car.modelYear}&nbsp;
+                      {car.carCompany}&nbsp;
+                      {car.modelName}&nbsp;
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'left',
+                        alignItems: 'center',
+                        height: '35px',
+                        padding: '10px',
+                        color: 'text.secondary',
+                        py: '30px',
+                        px: '10px',
+                        fontSize: '15px',
+                      }}
+                    >
+                      {reduce(car.condition)}
+                    </Box>
+                  </Box>
+                </Box>
+              </Paper>
+            </div>
+          ))
+        )}
+      </Box>
     </div>
   );
 }

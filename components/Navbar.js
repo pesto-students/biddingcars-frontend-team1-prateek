@@ -70,6 +70,8 @@ function Navbar(props) {
     </Box>
   );
 
+  
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -117,7 +119,9 @@ function Navbar(props) {
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           {navItems.map((item, i) => {
-            if (item.link === router.pathname) {
+            {console.log(item.link,router.pathname)}
+            if (item.link === router.pathname ||
+              item.link.includes('auction') &&router.pathname.includes('auction')) {
               return (
                 <Button
                   variant="contained"
