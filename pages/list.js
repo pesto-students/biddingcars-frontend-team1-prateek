@@ -6,14 +6,13 @@ import { AiOutlineCloseCircle, AiOutlineUpload } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { listCar } from '../actions/list.action';
 import { checkSignin } from '../actions/auth.action';
+import Reqsignin from '../components/Reqsignin';
 
 export default function List() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(checkSignin());
-  }, []);
+
   const [front, setFront] = useState([]);
   const [back, setBack] = useState([]);
   const [left, setLeft] = useState([]);
@@ -28,10 +27,17 @@ export default function List() {
   const [condition, setCondition] = useState('');
   const [basePrice, setBasePrice] = useState('');
   const [fullPrice, setFullPrice] = useState('');
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
 
   const [file, setFile] = useState([]);
-
+  useEffect(() => {
+    dispatch(checkSignin());
+    if(!auth.authenticate){
+      setStep(0)
+    }else{
+      setStep(1)
+    }
+  }, [auth.authenticate]);
   const submitForm = () => {
     const form = new FormData();
     form.append('carCompany', carCompany);
@@ -408,6 +414,8 @@ export default function List() {
   };
 
   switch (step) {
+    case 0:
+      return <Reqsignin/>;
     case 1:
       return renderStepOne();
     case 2:
