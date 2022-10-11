@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { signup, signin, googleSignIn } from "../actions/auth.action";
 import { TextField, Button } from "@mui/material";
+import AdminCheckbox from "./AdminCheckbox";
+import Checkbox from '@mui/material/Checkbox';
 // import RightDrawer from './RightDrawer';
 
 const Signin = ({ createAccount }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [role, setRole] = useState("user");
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(signin({ email, password }));
+    dispatch(signin({ email, password ,role}));
   };
   const googleSign = () => {
     dispatch(googleSignIn());
@@ -61,7 +63,15 @@ const Signin = ({ createAccount }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
+              if(e.target.checked){
+                setRole('admin')
+              }
+              else{
+                setRole('user')
+              }
 
+        }} />}/>
             <Button
               type="submit"
               variant="outlined"

@@ -70,7 +70,7 @@ function Navbar(props) {
     </Box>
   );
 
-  
+
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>

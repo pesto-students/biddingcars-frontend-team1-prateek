@@ -23,12 +23,28 @@ export default firebase;
 
 export const checkSignin = () => async (dispatch) => {
   try {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
+        let role;
+          await fetch(
+          process.env.addUserEndpoint.concat("/users/").concat(user.email)
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            role = data.role;
+          });
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
           userId:user.email,
           payload: JSON.stringify(user),
+          accessToken: user.multiFactor.user.accessToken,
+          role: role,
+        });
+      }else{
+        dispatch({
+          type: authConstants.SIGNIN_ERROR,
+          authenticate:false,
+
         });
       }
     });
@@ -38,7 +54,7 @@ export const checkSignin = () => async (dispatch) => {
 };
 
 export const signup =
-  ({ email, password,fname,lname }) =>
+  ({ email, password,fname,lname , role }) =>
   async (dispatch) => {
     try {
       firebase
@@ -51,7 +67,7 @@ export const signup =
         })
         .then((dataAfterEmail) => {
           firebase.auth().onAuthStateChanged(function (user) {
-              fetch(process.env.addUserEndpoint, {
+            fetch(process.env.addUserEndpoint.concat("/users/add"), {
                 method: "POST",
                 headers: {
                   Accept: "application/json",
@@ -61,24 +77,25 @@ export const signup =
                   firstname: fname,
                   lastname: lname,
                   email: email,
+                  role: role,
                 }),
               });
-            // if (user.emailVerified) {
-            //   console.log(user)
-            //   // Emailconsole is verified
-            //   dispatch({
-            //     type: authConstants.SIGNUP_SUCCESS,
-            //     userId:user.email,
-            //     payload:
-            //       'Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox.',
-            //   });
-            // } else {
-            //   // Email is not verified
-            //   dispatch({
-            //     type: authConstants.SIGNUP_ERROR,
-            //     payload: "Something went wrong, we couldn't create your account. Please try again.",
-            //   });
-            // }
+            if (user.emailVerified) {
+              console.log(user)
+              // Emailconsole is verified
+              dispatch({
+                type: authConstants.SIGNUP_SUCCESS,
+                userId:user.email,
+                payload:
+                  'Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox.',
+              });
+            } else {
+              // Email is not verified
+              dispatch({
+                type: authConstants.SIGNUP_ERROR,
+                payload: "Something went wrong, we couldn't create your account. Please try again.",
+              });
+            }
           });
         })
         .catch(function (error) {
@@ -98,7 +115,7 @@ export const signup =
   };
 
 export const signin =
-  ({ email, password }) =>
+  ({ email, password, role }) =>
   async (dispatch) => {
     try {
       firebase
@@ -110,6 +127,7 @@ export const signin =
               type: authConstants.SIGNIN_SUCCESS,
               userId:user.email,
               payload: JSON.stringify(user),
+              role: role,
             });
           });
         })
@@ -165,9 +183,10 @@ export const googleSignIn =
             type: authConstants.SIGNIN_SUCCESS,
             userId:user.email,
             payload: JSON.stringify(user),
+            accessToken: result.credential.idToken,
           });
 
-          fetch(process.env.addUserEndpoint, {
+          fetch(process.env.addUserEndpoint.concat("/users/add"), {
             method: "POST",
             headers: {
               Accept: "application/json",
