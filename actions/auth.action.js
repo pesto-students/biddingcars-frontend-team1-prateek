@@ -31,7 +31,12 @@ export const checkSignin = () => async (dispatch) => {
         )
           .then((response) => response.json())
           .then((data) => {
-            role = data.role;
+            if (data==null){
+              role='user'
+            }
+            else{
+              role=data.role
+            }
           });
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
