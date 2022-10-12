@@ -9,7 +9,9 @@ import store from '../store';
 import { blue, deepOrange, green, grey, lightBlue } from '@mui/material/colors';
 import Navbar from '../components/Navbar';
 import Layout from '../components/Layout';
-import '../styles/globals.css'
+import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ColorModeContext = React.createContext({ MyApp: () => {} });
 
@@ -24,6 +26,7 @@ const getDesignTokens = (mode) => ({
           text: {
             primary: grey[900],
             secondary: grey[600],
+            heading:grey[800],
           },
           secondary: blue,
         }
@@ -38,6 +41,7 @@ const getDesignTokens = (mode) => ({
           text: {
             primary: '#fff',
             secondary: grey[500],
+            heading:grey[500]
           },
           secondary: blue,
         }),
@@ -68,7 +72,7 @@ export function UISwitch() {
 }
 
 export default function MyApp({ Component, pageProps }) {
-  const [mode, setMode] = React.useState('light');
+  const [mode, setMode] = React.useState('dark');
   const colorMode = React.useMemo(
     () => ({
       MyApp: () => {
@@ -83,6 +87,18 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme={mode === "dark" ? 'dark' : 'light'}
+        />
         <Provider store={store}>
           <Navbar />
           <Layout>

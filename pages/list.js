@@ -1,13 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux';
-import RightDrawer from '../components/RightDrawer';
-import { Box, Button, Container, OutlinedInput, TextField } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import { Box, Button, Container, OutlinedInput, Paper, TextField } from '@mui/material';
 import { BsImage } from 'react-icons/bs';
 import { AiOutlineCloseCircle, AiOutlineUpload } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { listCar } from '../actions/list.action';
 import { checkSignin } from '../actions/auth.action';
+import { useRouter } from 'next/router'
+import { getTimeline } from '../actions/timeline.action';
 
 export default function List() {
+
+  const router = useRouter();
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -49,6 +53,7 @@ export default function List() {
     }
 
     dispatch(listCar(form));
+    router.push('/auctions');
   };
 
   useEffect(() => {
@@ -58,6 +63,21 @@ export default function List() {
 
   const desc =
     "The 2022 Ford Bronco Everglades build off the Bronco Black Diamond w model with additional features like a standard Bronco-first, factory-installed Ford Performance by WARN@ winch kit and air-intake snorkel. Combined with a 2.3L EcoBooste engine and the Sasquatch TM Package — it's built to help you confidently splash through water and take on dusty trails.";
+  
+    const reduce = (string) => {
+     
+        
+        return string.split('').splice(0, 15).join('')+'...';
+      
+    };
+
+  const toIndianCurrency = (num) => {
+    const curr = num?.toLocaleString('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    });
+    return curr;
+  };
 
   const renderStepOne = () => {
     return (
@@ -185,7 +205,7 @@ export default function List() {
               {front.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
                   <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{e.name}</Box>
+                  <Box>{reduce(e.name)}</Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -200,8 +220,8 @@ export default function List() {
                 </Box>
               ))}
             </Box>
-            <Box >
-              <Button variant="contained" color="secondary" onClick={() => setStep(1)} sx={nextButton}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant="outlined" color="secondary" onClick={() => setStep(1)} sx={nextButton}>
                 Back
               </Button>
               <Button variant="contained" color="secondary" onClick={() => setStep(3)} sx={nextButton}>
@@ -236,7 +256,7 @@ export default function List() {
               {back.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
                   <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{e.name}</Box>
+                  <Box>{reduce(e.name)}</Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -251,9 +271,14 @@ export default function List() {
                 </Box>
               ))}
             </Box>
-            <Button variant="contained" color="secondary" sx={nextButton} onClick={() => setStep(4)}>
-              Next
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant="outlined" color="secondary" onClick={() => setStep(2)} sx={nextButton}>
+                Back
+              </Button>
+              <Button variant="contained" color="secondary" onClick={() => setStep(4)} sx={nextButton}>
+                Next
+              </Button>
+            </Box>
           </Box>
         </form>
       </Box>
@@ -283,7 +308,7 @@ export default function List() {
               {right.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
                   <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{e.name}</Box>
+                  <Box>{reduce(e.name)}</Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -298,9 +323,14 @@ export default function List() {
                 </Box>
               ))}
             </Box>
-            <Button variant="contained" color="secondary" sx={nextButton} onClick={() => setStep(5)}>
-              Next
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant="outlined" color="secondary" onClick={() => setStep(3)} sx={nextButton}>
+                Back
+              </Button>
+              <Button variant="contained" color="secondary" onClick={() => setStep(5)} sx={nextButton}>
+                Next
+              </Button>
+            </Box>
           </Box>
         </form>
       </Box>
@@ -330,7 +360,7 @@ export default function List() {
               {left.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
                   <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{e.name}</Box>
+                  <Box>{reduce(e.name)}</Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -345,9 +375,14 @@ export default function List() {
                 </Box>
               ))}
             </Box>
-            <Button variant="contained" color="secondary" sx={nextButton} onClick={() => setStep(6)}>
-              Next
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant="outlined" color="secondary" onClick={() => setStep(4)} sx={nextButton}>
+                Back
+              </Button>
+              <Button variant="contained" color="secondary" onClick={() => setStep(6)} sx={nextButton}>
+                Next
+              </Button>
+            </Box>
           </Box>
         </form>
       </Box>
@@ -377,7 +412,7 @@ export default function List() {
               {interior.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
                   <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{e.name}</Box>
+                  <Box>{reduce(e.name)}</Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -393,16 +428,118 @@ export default function List() {
               ))}
             </Box>
 
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ width: '50%', mx: 'auto', my: '5px' }}
-              onClick={() => submitForm()}
-            >
-              List Car
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Button variant="outlined" color="secondary" onClick={() => setStep(5)} sx={nextButton}>
+                Back
+              </Button>
+              <Button variant="contained" color="secondary" onClick={() => setStep(7)} sx={nextButton}>
+                Next
+              </Button>
+            </Box>
           </Box>
         </form>
+      </Box>
+    );
+  };
+
+  const renderStepSeven = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          mx: 'auto',
+          width: {
+            xs: '90vw',
+            sm: '90vw',
+            md: '40vw',
+          },
+        }}
+      >
+        <Box sx={{ fontSize: '20px',mb:'10px' }}>Please confirm car details</Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Company</Box>
+          <Box sx={{ color: 'text.primary' }}>{carCompany} </Box>
+        </Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Model Name</Box>
+          <Box sx={{ color: 'text.primary' }}>{modelName} </Box>
+        </Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Model Year</Box>
+          <Box sx={{ color: 'text.primary' }}>{modelYear} </Box>
+        </Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Color</Box>
+          <Box sx={{ color: 'text.primary' }}>{color}</Box>
+        </Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Kilometers Driven</Box>
+          <Box sx={{ color: 'text.primary' }}>{kilometersDriven} Km</Box>
+        </Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Base Price</Box>
+          <Box sx={{ color: 'text.primary' }}>{toIndianCurrency(basePrice)} </Box>
+        </Box>
+        <Box sx={carAttributes}>
+          <Box sx={{ color: 'text.secondary' }}>Sticker Price</Box>
+          <Box sx={{ color: 'text.primary' }}>{toIndianCurrency(fullPrice)} </Box>
+        </Box>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'space-between' }}>
+          <Box
+            sx={{
+              color: 'text.primary',
+              my: '20px',
+            }}
+          >
+            <Box sx={{ fontSize: '18px', color: 'text.secondary', mb: '10px' }}>Description</Box>
+            {description}
+          </Box>
+          <Box
+            sx={{
+              color: 'text.primary',
+              my: '20px',
+            }}
+          >
+            <Box sx={{ fontSize: '18px', color: 'text.secondary', mb: '10px' }}>Condition</Box>
+            {condition}
+          </Box>
+          <Box sx={{ fontSize: '20px',my:'10px',color: 'text.secondary' }}>Pictures</Box>
+          <Box sx={{ display: 'flex', width: '100%', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+            {file.map((e, i) => (
+              <Box key={i} sx={imageNamePreviewAll}>
+                <BsImage size="2em" color="MediumSeaGreen" />
+                <Box sx={{fontSize:"12px",ml:'5px'}}>{reduce(e.name)}</Box>
+                <AiOutlineCloseCircle
+                  size="2em"
+                  color="tomato"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setFile((prev) => {
+                      return prev.filter((item) => item != e);
+                    });
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between',mt:'20px'}}>
+          <Button variant="outlined" color="secondary" onClick={() => setStep(6)} sx={{ width: '45%',my:'5px' }}>
+            Back
+          </Button>
+          <Paper variant="outlined" sx={{ width: '45%',px:'5px' }}>
+            <Button variant="contained" color="secondary" sx={{ width: '100%', my: '5px' }} onClick={(e) => {
+              e.preventDefault();
+              submitForm();
+              
+              toast('Car registered for approval !')
+            }}>
+              List the Car
+            </Button>
+          </Paper>
+        </Box>
       </Box>
     );
   };
@@ -420,6 +557,8 @@ export default function List() {
       return renderStepFive();
     case 6:
       return renderStepSix();
+    case 7:
+      return renderStepSeven();
   }
 }
 
@@ -462,6 +601,17 @@ const imageNamePreview = {
   p: '15px',
 };
 
+const imageNamePreviewAll = {
+  display: 'flex',
+  width: '45%',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  border: '1px solid gray',
+  borderRadius: '20px',
+  p: '15px',
+  my: '10px',
+};
+
 const imageNamePreviewWrap = {
   display: 'flex',
   justifyContent: 'center',
@@ -470,6 +620,14 @@ const imageNamePreviewWrap = {
   alignItems: 'center',
 };
 
-const nextButton = { width: '50%', mx: 'auto', my: '10px' };
+const nextButton = { width: '40%', my: '10px' };
 
 const OutlinedInputStyle = { display: 'flex', height: '40vh' };
+
+const carAttributes = {
+  display: 'flex',
+  width: '100&',
+  justifyContent: 'space-between',
+  fontSize: '17px',
+  mt: '10px',
+};
