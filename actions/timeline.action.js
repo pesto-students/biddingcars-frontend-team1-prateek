@@ -1,5 +1,6 @@
 import axios from '../helpers/axios';
 import { timelineConstants } from './constants';
+import { toast } from 'react-toastify';
 
 export const getTimeline = () => async (dispatch) => {
   try {
@@ -7,10 +8,13 @@ export const getTimeline = () => async (dispatch) => {
     const res = await axios.get(`/cars`);
     if (res.status === 200) {
       dispatch({ type: timelineConstants.GET_TIMELINE_SUCCESS, payload: res.data });
+      // toast('Live Auctions loaded', { type: 'success' })
     } else {
       dispatch({ type: timelineConstants.GET_TIMELINE_FAILURE });
+      toast('Something went wrong.', { type: 'error' })
     }
   } catch (err) {
     dispatch({ type: timelineConstants.GET_TIMELINE_FAILURE });
+    toast('Something went wrong.', { type: 'error' })
   }
 };

@@ -20,6 +20,8 @@ import { UISwitch } from '../pages/_app';
 import Signup from './Signup';
 import { signout } from '../actions/auth.action';
 import { useRouter } from 'next/router';
+import { AiFillCar } from 'react-icons/ai';
+import Logo from './Logo';
 
 const drawerWidth = 300;
 const navItems = [
@@ -74,8 +76,8 @@ function Navbar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        BIDDING CARS {auth.userName}
+      <Typography variant="h6" sx={{width:'100%',display:'flex',justifyContent:'center',my:'2em'}}>
+        <Logo /> {auth.userName}
       </Typography>
 
       <List>
@@ -113,15 +115,28 @@ function Navbar(props) {
       >
         <MenuIcon />
       </IconButton>
-      <Typography onClick={()=>router.push('/') } variant="h6" component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },cursor:'pointer' }}>
-        BIDDING CARS {auth.userName}
+      <Typography
+        onClick={() => router.push('/')}
+        variant="h6"
+        component="div"
+        sx={{
+          flexGrow: 1,
+          cursor: 'pointer',
+        }}
+      >
+        <Logo />
+        {auth.userName}
       </Typography>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           {navItems.map((item, i) => {
-            {console.log(item.link,router.pathname)}
-            if (item.link === router.pathname ||
-              item.link.includes('auction') &&router.pathname.includes('auction')) {
+            {
+              console.log(item.link, router.pathname);
+            }
+            if (
+              item.link === router.pathname ||
+              (item.link.includes('auction') && router.pathname.includes('auction'))
+            ) {
               return (
                 <Button
                   variant="contained"
@@ -144,7 +159,6 @@ function Navbar(props) {
             } else {
               return (
                 <Button
-                  
                   size="large"
                   key={i}
                   onClick={() => router.push(item.link)}
@@ -164,12 +178,12 @@ function Navbar(props) {
           })}
         </Box>
         {auth.authenticate ? (
-          <Box sx={{display:'flex'}}>
+          <Box sx={{ display: 'flex' }}>
             {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
             <Button
               onClick={() => dispatch(signout())}
-              variant='outlined'
-              size='large'
+              variant="outlined"
+              size="large"
               sx={{
                 height: '7vh',
                 fontSize: '1.1rem',
@@ -186,8 +200,8 @@ function Navbar(props) {
         {!auth.authenticate ? (
           <div>
             <Button
-              variant='outlined'
-              size='large'
+              variant="outlined"
+              size="large"
               sx={{
                 height: '7vh',
                 fontSize: '1.1rem',
