@@ -7,6 +7,8 @@ const initState = {
   userName: null,
   authenticate: false,
   message:null,
+  accessToken:null,
+  role:null,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -26,6 +28,8 @@ export default (state = initState, action) => {
         userId: action.userId,
         message: action.payload,
         authenticate: true,
+        accessToken:action.accessToken,
+        role:action.role,
       };
 
       break;
@@ -42,7 +46,7 @@ export default (state = initState, action) => {
           waiting: false,
           userId: action.userId,
           message: action.payload,
-          authenticate: false,
+          authenticate: true,
         };
 
         break;

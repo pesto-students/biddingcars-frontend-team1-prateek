@@ -1,25 +1,18 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import Navbar from '../components/Navbar';
-import styles from '../styles/Home.module.css';
-import Test from '../components/Signin';
 import { useSelector, useDispatch } from 'react-redux';
-import RightDrawer from '../components/RightDrawer';
-import { Box, Card, CircularProgress, Paper, Typography } from '@mui/material';
-import Layout from '../components/Layout';
-import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
+import  {  checkSignin } from '../actions/auth.action';
 import { useEffect, useState } from 'react';
-import { getTimeline } from '../actions/timeline.action';
-import { useRouter } from 'next/router';
 import DashboardDrawer from '../components/DashboardDrawer';
 import Reqsignin from '../components/Reqsignin';
-export default function Dashboard() {
+
+export default function Mylistings() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
       dispatch(checkSignin());
   }, [])
+
   return (
     !auth.authenticate?
     <Reqsignin/>:
@@ -38,7 +31,8 @@ export default function Dashboard() {
         height: '10vh',
       }}
     >
-      <h2>Dashboard</h2>
+      <h2>My Listings</h2>
     </div>
-    </div>  );
+    </div>
+  );
 }
