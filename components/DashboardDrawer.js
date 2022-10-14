@@ -49,7 +49,7 @@ export default function DashboardDrawer(props) {
               alignItems:'center',
               flexDirection:'column', }}>
           {navItems.map((item, i) => {
-            {console.log(item.link,router.pathname)}
+            // {console.log(item.link,router.pathname)}
             if (item.link === router.pathname ||
               item.link.includes('auction') &&router.pathname.includes('auction')) {
               return (

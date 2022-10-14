@@ -2,6 +2,8 @@ import { authConstants } from './constants';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { toast } from 'react-toastify';
+import { getUserinfo } from './userinfo.action';
 // console.log(firebase);
 // Your app's Firebase configuration
 var firebaseConfig = {
@@ -38,7 +40,7 @@ export const checkSignin = () => async (dispatch) => {
               role=data.role
             }
           }).catch(
-            (err)=>{log.error(err)}
+            (err)=>{console.log(err)}
           );
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
@@ -47,6 +49,7 @@ export const checkSignin = () => async (dispatch) => {
           accessToken: user.multiFactor.user.accessToken,
           role: role,
         });
+        dispatch(getUserinfo(user.email))
       }else{
         dispatch({
           type: authConstants.SIGNIN_ERROR,
@@ -88,7 +91,7 @@ export const signup =
                 }),
               });
             if (user.emailVerified) {
-              console.log(user)
+              // console.log(user)
               // Emailconsole is verified
               dispatch({
                 type: authConstants.SIGNUP_SUCCESS,
@@ -106,14 +109,14 @@ export const signup =
           });
         })
         .catch(function (error) {
-          console.log(error);
+          // console.log(error);
           dispatch({
             type: authConstants.SIGNUP_ERROR,
             payload: "Something went wrong, we couldn't create your account. Please try again.",
           });
         });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: authConstants.SIGNUP_ERROR,
         payload: "Something went wrong, we couldn't create your account. Please try again.",
@@ -136,16 +139,18 @@ export const signin =
               payload: JSON.stringify(user),
               role: role,
             });
+            dispatch(getUserinfo(user.email))
           });
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch({
             type: authConstants.SIGNIN_ERROR,
             payload: 'Invalid login credentials',
           });
         });
     } catch (err) {
-      dispatch({ type: authConstants.SIGNIN_ERROR, payload: 'Invalid login credentials' });
+      dispatch({ type: authConstants.SIGNIN_ERROR, payload: 'Error while logging in' });
+      toast('Error while logging in', { type: 'error' })
     }
   };
 
@@ -185,7 +190,7 @@ export const googleSignIn =
           // const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          console.log(user)
+          // console.log(user)
           dispatch({
             type: authConstants.SIGNIN_SUCCESS,
             userId:user.email,
@@ -205,10 +210,10 @@ export const googleSignIn =
               email: user.email,
             }),
           });
-
+          dispatch(getUserinfo(user.email))
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           const errorCode = error.code;
           const errorMessage = error.message;
           // The email of the user's account used.

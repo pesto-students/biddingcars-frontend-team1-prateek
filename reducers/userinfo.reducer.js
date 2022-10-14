@@ -47,6 +47,38 @@ export default (state = initState, action) => {
       };
 
       break;
+      case userinfoConstants.UPDATE_USERINFO:
+        state = {
+          ...state,
+          waiting: false,
+          ...action.state
+        };
+        break;
+
+        case userinfoConstants.POST_USERINFO_REQUEST:
+          state = {
+            ...state,
+            waiting: true,
+
+          };
+
+          break;
+        case userinfoConstants.POST_USERINFO_SUCCESS:
+          state = {
+            ...state,
+            waiting: false,
+            message: action.payload,
+          };
+
+          break;
+        case userinfoConstants.POST_USERINFO_FAILURE:
+          state = {
+            ...state,
+            waiting: false,
+            message: action.payload,
+          };
+
+          break;
 
   }
   return state;
