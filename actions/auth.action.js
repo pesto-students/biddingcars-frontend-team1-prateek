@@ -37,7 +37,9 @@ export const checkSignin = () => async (dispatch) => {
             else{
               role=data.role
             }
-          });
+          }).catch(
+            (err)=>{log.error(err)}
+          );
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
           userId:user.email,

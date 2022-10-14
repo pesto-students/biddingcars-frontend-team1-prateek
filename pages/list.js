@@ -69,12 +69,12 @@ export default function List() {
 
   const desc =
     "The 2022 Ford Bronco Everglades build off the Bronco Black Diamond w model with additional features like a standard Bronco-first, factory-installed Ford Performance by WARN@ winch kit and air-intake snorkel. Combined with a 2.3L EcoBooste engine and the Sasquatch TM Package — it's built to help you confidently splash through water and take on dusty trails.";
-  
+
     const reduce = (string) => {
-     
-        
+
+
         return string.split('').splice(0, 15).join('')+'...';
-      
+
     };
 
   const toIndianCurrency = (num) => {
@@ -539,7 +539,7 @@ export default function List() {
             <Button variant="contained" color="secondary" sx={{ width: '100%', my: '5px' }} onClick={(e) => {
               e.preventDefault();
               submitForm();
-              
+
               toast('Car registered for approval !')
             }}>
               List the Car

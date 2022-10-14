@@ -6,13 +6,12 @@ import Test from '../components/Signin';
 import { useSelector, useDispatch } from 'react-redux';
 import RightDrawer from '../components/RightDrawer';
 import { Box, Card, CircularProgress, Paper, Typography } from '@mui/material';
-import Layout from '../components/Layout';
 import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
 import { useEffect, useState } from 'react';
-import { getTimeline } from '../actions/timeline.action';
 import { useRouter } from 'next/router';
 import DashboardDrawer from '../components/DashboardDrawer';
 import Reqsignin from '../components/Reqsignin';
+import Profile from './profile';
 export default function Dashboard() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -30,15 +29,6 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
         <DashboardDrawer/>
-        <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '10vh',
-      }}
-    >
-      <h2>Dashboard</h2>
-    </div>
+        <Profile/>
     </div>  );
 }
