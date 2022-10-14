@@ -4,7 +4,7 @@ import { checkSignin } from "../actions/auth.action";
 import { Fragment, useEffect, useState } from "react";
 import DashboardDrawer from "../components/DashboardDrawer";
 import Reqsignin from "../components/Reqsignin";
-import { getUserinfo } from '../actions/userinfo.action';
+import { userinfoConstants } from "../actions/constants";
 import {
   Box,
   Button,
@@ -13,22 +13,24 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import { postUserinfo } from "../actions/userinfo.action";
 export default function Profile() {
   const auth = useSelector((state) => state.auth);
   const userinfo = useSelector((state) => state.userinfo);
   const dispatch = useDispatch();
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [email, setEmail] = useState("");
+  const [disabledForm, setdisabledForm] = useState(true);
+  const [data, setData] = useState({});
   useEffect(() => {
     dispatch(checkSignin());
-    dispatch(getUserinfo(auth.userId))
+    setData(userinfo)
   }, []);
 
-  let handleEdit=()=>{}
+  const handleEdit = () => {
+    dispatch(postUserinfo(userinfo))
+  };
   return !auth.authenticate ? (
     <Reqsignin />
-  ) : (
+  ) : disabledForm ? (
     <Fragment>
       <DashboardDrawer />
       <div
@@ -36,60 +38,60 @@ export default function Profile() {
         style={{ marginLeft: "226px", padding: "20px" }}
       >
         <div style={profilepic}></div>
-        <div  className="gen-info" style={{marginTop:'10px'}}>
+        <div className="gen-info" style={{ marginTop: "10px" }}>
           <h3>User Information</h3>
           <div style={col}>
             <div style={rowhalf}>
               <div style={col}>
                 <label style={txtlabel}>First Name</label>
-                <TextField disabled size='small' value={userinfo.firstName}/>
+                <TextField disabled size="small" value={userinfo.firstName} />
               </div>
               <div style={col}>
                 <label style={txtlabel}>Last Name</label>
-                <TextField disabled size='small' value={userinfo.lastName}/>
+                <TextField disabled size="small" value={userinfo.lastName} />
               </div>
             </div>
             <div style={rowfull}>
               <div style={col}>
                 <label style={txtlabel}>Email</label>
-                <TextField disabled size='small' value={userinfo.email}/>
+                <TextField disabled size="small" value={userinfo.email} />
               </div>
             </div>
           </div>
         </div>
-        <div className="gen-info" style={{marginTop:'40px'}}>
+        <div className="gen-info" style={{ marginTop: "40px" }}>
           <h3>Contact Information</h3>
           <div style={col}>
             <div style={rowfull}>
               <div style={col}>
                 <label style={txtlabel}>Address</label>
-                <TextField disabled size='small' value={userinfo.address}/>
+                <TextField disabled size="small" value={userinfo.address} />
               </div>
             </div>
             <div style={rowhalf}>
               <div style={col}>
                 <label style={txtlabel}>City</label>
-                <TextField disabled size='small' value={userinfo.city}/>
+                <TextField disabled size="small" value={userinfo.city} />
               </div>
               <div style={col}>
                 <label style={txtlabel}>State</label>
-                <TextField disabled size="small" value={userinfo.state}/>
+                <TextField disabled size="small" value={userinfo.state} />
               </div>
             </div>
             <div style={rowhalf}>
               <div style={col}>
                 <label style={txtlabel}>Zip Code</label>
-                <TextField disabled size='small' value={userinfo.zipCode}/>
+                <TextField disabled size="small" value={userinfo.zipCode} />
               </div>
               <div style={col}>
                 <label style={txtlabel}>Country</label>
-                <TextField disabled size='small' value={userinfo.country}/>
+                <TextField disabled size="small" value={userinfo.country} />
               </div>
             </div>
             <div style={rowfull}>
               <div style={col}>
                 <label style={txtlabel}>Mobile No</label>
-                <TextField disabled size='small' value={userinfo.mobile}/>
+                <TextField disabled size="small" value={userinfo.mobile} />
               </div>
             </div>
           </div>
@@ -98,10 +100,159 @@ export default function Profile() {
           <Button
             variant="contained"
             onClick={() => {
-             handleEdit()
+              setdisabledForm(false);
             }}
           >
             Edit
+          </Button>
+        </div>
+      </div>
+    </Fragment>
+  ) : (
+    <Fragment>
+      <DashboardDrawer />
+      <div
+        className="profile-card"
+        style={{ marginLeft: "226px", padding: "20px" }}
+      >
+        <div style={profilepic}></div>
+        <div className="gen-info" style={{ marginTop: "10px" }}>
+          <h3>User Information</h3>
+          <div style={col}>
+            <div style={rowhalf}>
+              <div style={col}>
+                <label style={txtlabel}>First Name</label>
+                <TextField
+                  size="small"
+                  value={userinfo.firstName}
+                  onChange={() => {
+                    dispatch({
+                      type: userinfoConstants.UPDATE_USERINFO,
+                      state:{firstName: event.target.value},
+                    });
+                  }}
+                />
+              </div>
+              <div style={col}>
+                <label style={txtlabel}>Last Name</label>
+                <TextField size="small" value={userinfo.lastName}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{lastName: event.target.value},
+                  });
+                }}/>
+              </div>
+            </div>
+            <div style={rowfull}>
+              <div style={col}>
+                <label style={txtlabel}>Email</label>
+                <TextField disabled size="small" value={userinfo.email} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="gen-info" style={{ marginTop: "40px" }}>
+          <h3>Contact Information</h3>
+          <div style={col}>
+            <div style={rowfull}>
+              <div style={col}>
+                <label style={txtlabel}>Address</label>
+                <TextField size="small" value={userinfo.address}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{address: event.target.value},
+                  });
+                }}/>
+              </div>
+            </div>
+            <div style={rowhalf}>
+              <div style={col}>
+                <label style={txtlabel}>City</label>
+                <TextField size="small" value={userinfo.city}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{city: event.target.value},
+                  });
+                }} />
+              </div>
+              <div style={col}>
+                <label style={txtlabel}>State</label>
+                <TextField size="small" value={userinfo.state}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{state: event.target.value},
+                  });
+                }}/>
+              </div>
+            </div>
+            <div style={rowhalf}>
+              <div style={col}>
+                <label style={txtlabel}>Zip Code</label>
+                <TextField size="small" value={userinfo.zipCode}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{zipCode: event.target.value},
+                  });
+                }}/>
+              </div>
+              <div style={col}>
+                <label style={txtlabel}>Country</label>
+                <TextField size="small" value={userinfo.country}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{country: event.target.value},
+                  });
+                }} />
+              </div>
+            </div>
+            <div style={rowfull}>
+              <div style={col}>
+                <label style={txtlabel}>Mobile No</label>
+                <TextField size="small" value={userinfo.mobile}
+                onChange={() => {
+                  dispatch({
+                    type: userinfoConstants.UPDATE_USERINFO,
+                    // lastname: event.target.value,
+                    state:{mobile: event.target.value},
+                  });
+                }}/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={editbutton}>
+          <Button
+            marginLeft="10px"
+            variant="contained"
+            onClick={() => {
+              handleEdit();
+            }}
+          >
+            Update Changes
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setdisabledForm(true);
+              dispatch({
+                type: userinfoConstants.UPDATE_USERINFO,
+                state:data,
+              });
+          }}
+          >
+            Cancel
           </Button>
         </div>
       </div>
@@ -131,13 +282,14 @@ const txtlabel = { fontSize: "14px" };
 const editbutton = {
   marginTop: "25px",
   display: "flex",
-  flexDirection: "row",
-  width: "430px",
-  justifyContent: "flex-end",
+  flexDirection: "row-reverse",
+  width: "420px",
+  justifyContent: "space-between",
+  marginLeft: "20px",
 };
-const profilepic={
-  height:'100px',
-  width:'100px',
-  borderRadius:'50px',
-  border:'solid'
-}
+const profilepic = {
+  height: "100px",
+  width: "100px",
+  borderRadius: "50px",
+  border: "solid",
+};

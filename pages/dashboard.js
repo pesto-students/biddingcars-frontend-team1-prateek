@@ -9,6 +9,7 @@ import { Box, Card, CircularProgress, Paper, Typography } from '@mui/material';
 import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+// import { getUserinfo } from '../actions/userinfo.action';
 import DashboardDrawer from '../components/DashboardDrawer';
 import Reqsignin from '../components/Reqsignin';
 import Profile from './profile';
@@ -18,6 +19,7 @@ export default function Dashboard() {
 
   useEffect(() => {
       dispatch(checkSignin());
+      // dispatch(getUserinfo(auth.userId))
   }, [])
   return (
     !auth.authenticate?

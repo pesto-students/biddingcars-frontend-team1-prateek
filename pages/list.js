@@ -60,7 +60,7 @@ export default function List() {
 
   useEffect(() => {
     setFile([...front, ...back, ...left, ...right, ...interior]);
-    console.log(file);
+    // console.log(file);
   }, [front, back, left, right, interior, step]);
 
   const desc =
