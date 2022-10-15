@@ -539,8 +539,6 @@ export default function List() {
             <Button variant="contained" color="secondary" sx={{ width: '100%', my: '5px' }} onClick={(e) => {
               e.preventDefault();
               submitForm();
-
-              toast('Car registered for approval !')
             }}>
               List the Car
             </Button>
