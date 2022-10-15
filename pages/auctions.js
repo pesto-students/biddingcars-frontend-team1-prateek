@@ -71,8 +71,8 @@ export default function Auctions() {
                     <Image
                       width="16"
                       height="9"
-                      layout="responsive"
                       src={car.photos[0]}
+                      layout="responsive"
                       style={{ position: 'absolute', borderRadius: '10px' }}
                       alt={car.modelName}
                     />
