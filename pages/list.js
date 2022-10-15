@@ -6,20 +6,16 @@ import { AiOutlineCloseCircle, AiOutlineUpload } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { listCar } from '../actions/list.action';
 import { checkSignin } from '../actions/auth.action';
-import Reqsignin from '../components/Reqsignin';
-
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { getTimeline } from '../actions/timeline.action';
+import Reqsignin from '../components/Reqsignin';
+import Image from 'next/image';
 
 export default function List() {
-
   const router = useRouter();
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(checkSignin());
-  }, []);
   const [front, setFront] = useState([]);
   const [back, setBack] = useState([]);
   const [left, setLeft] = useState([]);
@@ -34,10 +30,17 @@ export default function List() {
   const [condition, setCondition] = useState('');
   const [basePrice, setBasePrice] = useState('');
   const [fullPrice, setFullPrice] = useState('');
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
 
   const [file, setFile] = useState([]);
-
+  useEffect(() => {
+    dispatch(checkSignin());
+    if (!auth.authenticate) {
+      setStep(0);
+    } else {
+      setStep(1);
+    }
+  }, [auth.authenticate]);
   const submitForm = () => {
     const form = new FormData();
     form.append('carCompany', carCompany);
@@ -66,12 +69,9 @@ export default function List() {
   const desc =
     "The 2022 Ford Bronco Everglades build off the Bronco Black Diamond w model with additional features like a standard Bronco-first, factory-installed Ford Performance by WARN@ winch kit and air-intake snorkel. Combined with a 2.3L EcoBooste engine and the Sasquatch TM Package — it's built to help you confidently splash through water and take on dusty trails.";
 
-    const reduce = (string) => {
-
-
-        return string.split('').splice(0, 15).join('')+'...';
-
-    };
+  const reduce = (string) => {
+    return string.split('').splice(0, 25).join('') + '...';
+  };
 
   const toIndianCurrency = (num) => {
     const curr = num?.toLocaleString('en-IN', {
@@ -206,8 +206,30 @@ export default function List() {
             <Box sx={imageNamePreviewWrap}>
               {front.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
-                  <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{reduce(e.name)}</Box>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      src={URL.createObjectURL(e)}
+                      alt={e.name}
+                    />
+                    <Paper
+                      sx={imageName}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      {reduce(e.name)}
+                    </Paper>
+                  </Box>
+
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -257,8 +279,29 @@ export default function List() {
             <Box sx={imageNamePreviewWrap}>
               {back.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
-                  <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{reduce(e.name)}</Box>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      src={URL.createObjectURL(e)}
+                      alt={e.name}
+                    />
+                    <Paper
+                      sx={imageName}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      {reduce(e.name)}
+                    </Paper>
+                  </Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -309,8 +352,29 @@ export default function List() {
             <Box sx={imageNamePreviewWrap}>
               {right.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
-                  <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{reduce(e.name)}</Box>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      src={URL.createObjectURL(e)}
+                      alt={e.name}
+                    />
+                    <Paper
+                      sx={imageName}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      {reduce(e.name)}
+                    </Paper>
+                  </Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -361,8 +425,29 @@ export default function List() {
             <Box sx={imageNamePreviewWrap}>
               {left.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
-                  <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{reduce(e.name)}</Box>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      src={URL.createObjectURL(e)}
+                      alt={e.name}
+                    />
+                    <Paper
+                      sx={imageName}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      {reduce(e.name)}
+                    </Paper>
+                  </Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -413,8 +498,29 @@ export default function List() {
             <Box sx={imageNamePreviewWrap}>
               {interior.map((e, i) => (
                 <Box key={i} sx={imageNamePreview}>
-                  <BsImage size="2em" color="MediumSeaGreen" />
-                  <Box>{reduce(e.name)}</Box>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      src={URL.createObjectURL(e)}
+                      alt={e.name}
+                    />
+                    <Paper
+                      sx={imageName}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      {reduce(e.name)}
+                    </Paper>
+                  </Box>
                   <AiOutlineCloseCircle
                     size="2em"
                     color="tomato"
@@ -458,7 +564,7 @@ export default function List() {
           },
         }}
       >
-        <Box sx={{ fontSize: '20px',mb:'10px' }}>Please confirm car details</Box>
+        <Box sx={{ fontSize: '20px', mb: '10px' }}>Please confirm car details</Box>
         <Box sx={carAttributes}>
           <Box sx={{ color: 'text.secondary' }}>Company</Box>
           <Box sx={{ color: 'text.primary' }}>{carCompany} </Box>
@@ -506,12 +612,33 @@ export default function List() {
             <Box sx={{ fontSize: '18px', color: 'text.secondary', mb: '10px' }}>Condition</Box>
             {condition}
           </Box>
-          <Box sx={{ fontSize: '20px',my:'10px',color: 'text.secondary' }}>Pictures</Box>
+          <Box sx={{ fontSize: '20px', my: '10px', color: 'text.secondary' }}>Pictures</Box>
           <Box sx={{ display: 'flex', width: '100%', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             {file.map((e, i) => (
               <Box key={i} sx={imageNamePreviewAll}>
-                <BsImage size="2em" color="MediumSeaGreen" />
-                <Box sx={{fontSize:"12px",ml:'5px'}}>{reduce(e.name)}</Box>
+              <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <Image
+                      width="16"
+                      height="9"
+                      layout="responsive"
+                      style={{ position: 'absolute', borderRadius: '10px' }}
+                      src={URL.createObjectURL(e)}
+                      alt={e.name}
+                    />
+                    <Paper
+                      sx={imageName}
+                      elevation={0}
+                      variant="outlined"
+                    >
+                      {reduce(e.name)}
+                    </Paper>
+                  </Box>
                 <AiOutlineCloseCircle
                   size="2em"
                   color="tomato"
@@ -527,15 +654,20 @@ export default function List() {
             ))}
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between',mt:'20px'}}>
-          <Button variant="outlined" color="secondary" onClick={() => setStep(6)} sx={{ width: '45%',my:'5px' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '20px' }}>
+          <Button variant="outlined" color="secondary" onClick={() => setStep(6)} sx={{ width: '45%', my: '5px' }}>
             Back
           </Button>
-          <Paper variant="outlined" sx={{ width: '45%',px:'5px' }}>
-            <Button variant="contained" color="secondary" sx={{ width: '100%', my: '5px' }} onClick={(e) => {
-              e.preventDefault();
-              submitForm();
-            }}>
+          <Paper variant="outlined" sx={{ width: '45%', px: '5px' }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ width: '100%', my: '5px' }}
+              onClick={(e) => {
+                e.preventDefault();
+                submitForm();
+              }}
+            >
               List the Car
             </Button>
           </Paper>
@@ -545,6 +677,8 @@ export default function List() {
   };
 
   switch (step) {
+    case 0:
+      return <Reqsignin />;
     case 1:
       return renderStepOne();
     case 2:
@@ -568,7 +702,7 @@ const stepOneFormStyle = {
   width: {
     xs: '100vw',
     sm: '50vw',
-    md: '30vw',
+    md: '40vw',
   },
 };
 
@@ -580,27 +714,34 @@ const stepOneWrapper = {
 };
 
 const textField = {
-  width:'100%',my:'10px'
+  width: '100%',
+  my: '10px',
 };
 
-const textFieldHalf = { width:'100%',mt: '10px', mr: '20px' };
+const textFieldHalf = { width: '100%', mt: '10px', mr: '20px' };
 
 const halfSizedInput = {
-  display: 'flex'
+  display: 'flex',
 };
 
-const uploadText = { position: 'absolute', top: { xs:'35%',sm:'35%',md:'40%'}, left: { xs:'25%',sm:'35%',md:'30%'}, textAlign: 'center' };
+const uploadText = {
+  position: 'absolute',
+  top: { xs: '35%', sm: '35%', md: '40%' },
+  left: { xs: '25%', sm: '35%', md: '30%' },
+  textAlign: 'center',
+};
 
 const stepHeading = { mx: 'auto', fontSize: '20px', mb: '30px' };
 
 const imageNamePreview = {
   display: 'flex',
-  width: '70%',
+  width: '45%',
   justifyContent: 'space-between',
   alignItems: 'center',
   border: '1px solid gray',
-  borderRadius: '20px',
-  p: '15px',
+  borderRadius: '10px',
+  p: '5px',
+  my: '10px',
 };
 
 const imageNamePreviewAll = {
@@ -609,16 +750,18 @@ const imageNamePreviewAll = {
   justifyContent: 'space-between',
   alignItems: 'center',
   border: '1px solid gray',
-  borderRadius: '20px',
-  p: '15px',
+  borderRadius: '10px',
+  p: '5px',
   my: '10px',
 };
 
 const imageNamePreviewWrap = {
+  width: '100%',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
+  flexWrap:'wrap',
   my: '10px',
-  flexDirection: 'column',
+  flexDirection: 'row',
   alignItems: 'center',
 };
 
@@ -633,3 +776,17 @@ const carAttributes = {
   fontSize: '17px',
   mt: '10px',
 };
+
+const imageName = {
+  fontSize:'0.7em',
+  display: 'flex',
+  justifyContent: 'left',
+  alignItems: 'center',
+  height: '15px',
+  position: 'absolute',
+  bottom: '0px',
+  left: '0px',
+  padding: '10px',
+  borderRadius: '0px 10px 0px 10px',
+  color: 'custom',
+}
