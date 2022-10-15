@@ -88,7 +88,7 @@ export default function List() {
           <Box sx={stepOneFormStyle}>
             <Box sx={halfSizedInput}>
               <TextField
-                sx={textField}
+                sx={textFieldHalf}
                 id="outlined-basic"
                 label="Company"
                 variant="outlined"
@@ -114,7 +114,7 @@ export default function List() {
             />
             <Box sx={halfSizedInput}>
               <TextField
-                sx={textField}
+                sx={textFieldHalf}
                 id="outlined-basic"
                 label="Model Year"
                 variant="outlined"
@@ -133,7 +133,7 @@ export default function List() {
 
             <Box sx={halfSizedInput}>
               <TextField
-                sx={textField}
+                sx={textFieldHalf}
                 id="outlined-basic"
                 label="Base Price"
                 variant="outlined"
@@ -174,7 +174,7 @@ export default function List() {
             <Button
               variant="contained"
               color="secondary"
-              sx={{ width: '50%', mx: 'auto', my: '5px' }}
+              sx={{ width: '50%', mx: 'auto', my: '15px' }}
               onClick={() => setStep(2)}
             >
               Next
@@ -582,14 +582,16 @@ const stepOneWrapper = {
 };
 
 const textField = {
-  m: '10px',
+  width:'100%',my:'10px'
 };
+
+const textFieldHalf = { width:'100%',mt: '10px', mr: '20px' };
 
 const halfSizedInput = {
-  display: 'flex',
+  display: 'flex'
 };
 
-const uploadText = { position: 'absolute', top: '35%', left: '25%', textAlign: 'center' };
+const uploadText = { position: 'absolute', top: { xs:'35%',sm:'35%',md:'40%'}, left: { xs:'25%',sm:'35%',md:'30%'}, textAlign: 'center' };
 
 const stepHeading = { mx: 'auto', fontSize: '20px', mb: '30px' };
 
