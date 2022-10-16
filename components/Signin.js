@@ -63,7 +63,7 @@ const Signin = ({ createAccount }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
+            {/* <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
               if(e.target.checked){
                 setRole('admin')
               }
@@ -71,7 +71,7 @@ const Signin = ({ createAccount }) => {
                 setRole('user')
               }
 
-        }} />}/>
+        }} />}/> */}
             <Button
               type="submit"
               variant="outlined"
@@ -87,7 +87,7 @@ const Signin = ({ createAccount }) => {
               Login
             </Button>
             {createAccount}
-            <a href="#">Forgot password?</a>
+            {/* <a href="#">Forgot password?</a> */}
             <Button
               type="submit"
               onClick={() => {

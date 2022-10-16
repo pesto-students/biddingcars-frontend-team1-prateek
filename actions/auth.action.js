@@ -1,9 +1,10 @@
-import { authConstants } from './constants';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { authConstants } from "./constants";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { toast } from 'react-toastify';
-import { getUserinfo } from './userinfo.action';
+import { toast } from "react-toastify";
+import axios from "../helpers/axios";
+import { getUserinfo } from "./userinfo.action";
 // console.log(firebase);
 // Your app's Firebase configuration
 var firebaseConfig = {
@@ -13,7 +14,7 @@ var firebaseConfig = {
   storageBucket: process.env.storageBucket,
   messagingSenderId: process.env.messagingSenderId,
   appId: process.env.appId,
-  measurementId: process.env.measurementId
+  measurementId: process.env.measurementId,
 };
 
 if (!firebase.apps.length) {
@@ -28,43 +29,45 @@ export const checkSignin = () => async (dispatch) => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         let role;
-          await fetch(
+        await fetch(
           process.env.addUserEndpoint.concat("/users/").concat(user.email)
         )
           .then((response) => response.json())
           .then((data) => {
-            if (data==null){
-              role='user'
+            if (data == null) {
+              role = "user";
+            } else {
+              role = data.role;
             }
-            else{
-              role=data.role
-            }
-          }).catch(
-            (err)=>{console.log(err)}
-          );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
-          userId:user.email,
+          userId: user.email,
           payload: JSON.stringify(user),
           accessToken: user.multiFactor.user.accessToken,
           role: role,
         });
-        dispatch(getUserinfo(user.email))
-      }else{
+        dispatch(getUserinfo(user.email));
+      } else {
         dispatch({
           type: authConstants.SIGNIN_ERROR,
-          authenticate:false,
-
+          authenticate: false,
         });
       }
     });
   } catch (err) {
-    dispatch({ type: authConstants.SIGNIN_ERROR, payload: 'Invalid login credentials' });
+    dispatch({
+      type: authConstants.SIGNIN_ERROR,
+      payload: "Invalid login credentials",
+    });
   }
 };
 
 export const signup =
-  ({ email, password,fname,lname , role }) =>
+  ({ email, password, fname, lname, role }) =>
   async (dispatch) => {
     try {
       firebase
@@ -78,48 +81,51 @@ export const signup =
         .then((dataAfterEmail) => {
           firebase.auth().onAuthStateChanged(function (user) {
             fetch(process.env.addUserEndpoint.concat("/users/add"), {
-                method: "POST",
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  firstname: fname,
-                  lastname: lname,
-                  email: email,
-                  role: role,
-                }),
-              });
-            if (user.emailVerified) {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                firstname: fname,
+                lastname: lname,
+                email: email,
+                role: role,
+              }),
+            });
+            // if (user.emailVerified) {
               // console.log(user)
               // Emailconsole is verified
               dispatch({
                 type: authConstants.SIGNUP_SUCCESS,
-                userId:user.email,
+                userId: user.email,
                 payload:
-                  'Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox.',
+                  "Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox.",
               });
-            } else {
-              // Email is not verified
-              dispatch({
-                type: authConstants.SIGNUP_ERROR,
-                payload: "Something went wrong, we couldn't create your account. Please try again.",
-              });
-            }
+            // } else {
+            //   // Email is not verified
+            //   dispatch({
+            //     type: authConstants.SIGNUP_ERROR,
+            //     payload:
+            //       "1Something went wrong, we couldn't create your account. Please try again.",
+            //   });
+            // }
           });
         })
         .catch(function (error) {
           // console.log(error);
           dispatch({
             type: authConstants.SIGNUP_ERROR,
-            payload: "Something went wrong, we couldn't create your account. Please try again.",
+            payload:
+              "2Something went wrong, we couldn't create your account. Please try again.",
           });
         });
     } catch (err) {
       // console.log(err);
       dispatch({
         type: authConstants.SIGNUP_ERROR,
-        payload: "Something went wrong, we couldn't create your account. Please try again.",
+        payload:
+          "3Something went wrong, we couldn't create your account. Please try again.",
       });
     }
   };
@@ -135,22 +141,25 @@ export const signin =
           firebase.auth().onAuthStateChanged(function (user) {
             dispatch({
               type: authConstants.SIGNIN_SUCCESS,
-              userId:user.email,
+              userId: user.email,
               payload: JSON.stringify(user),
               role: role,
             });
-            dispatch(getUserinfo(user.email))
+            dispatch(getUserinfo(user.email));
           });
         })
         .catch((err) => {
           dispatch({
             type: authConstants.SIGNIN_ERROR,
-            payload: 'Invalid login credentials',
+            payload: "Invalid login credentials",
           });
         });
     } catch (err) {
-      dispatch({ type: authConstants.SIGNIN_ERROR, payload: 'Error while logging in' });
-      toast('Error while logging in', { type: 'error' })
+      dispatch({
+        type: authConstants.SIGNIN_ERROR,
+        payload: "Error while logging in",
+      });
+      toast("Error while logging in", { type: "error" });
     }
   };
 
@@ -165,67 +174,176 @@ export const signout = () => async (dispatch) => {
       .catch(() => {
         dispatch({
           type: authConstants.SIGNOUT_ERROR,
-          payload: '...some error message for the user...',
+          payload: "...some error message for the user...",
         });
       });
   } catch (err) {
     dispatch({
       type: authConstants.SIGNOUT_ERROR,
-      payload: '...some error message for the user...',
+      payload: "...some error message for the user...",
     });
   }
 };
 
+export const googleSignIn = () => async (dispatch) => {
+  try {
+    const provider = new GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // console.log(user)
+        dispatch({
+          type: authConstants.SIGNIN_SUCCESS,
+          userId: user.email,
+          payload: JSON.stringify(user),
+          accessToken: result.credential.idToken,
+        });
 
-export const googleSignIn =
-() =>
+        fetch(process.env.addUserEndpoint.concat("/users/add"), {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstname: user.displayName.split(" ")[0],
+            lastname: user.displayName.split(" ")[1]
+              ? user.displayName.split(" ")[1]
+              : " ",
+            email: user.email,
+          }),
+        });
+        dispatch(getUserinfo(user.email));
+      })
+      .catch((error) => {
+        // console.log(error)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        dispatch({
+          type: authConstants.SIGNIN_ERROR,
+          payload: errorMessage,
+        });
+      });
+  } catch (err) {
+    dispatch({
+      type: authConstants.SIGNIN_ERROR,
+      payload: "Invalid login credentials",
+    });
+  }
+};
+
+export const resetPassword =
+  ({ email }) =>
   async (dispatch) => {
     try {
-
-      const provider = new GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-      .then((result) => {
-
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          // const token = credential.accessToken;
-          // The signed-in user info.
-          const user = result.user;
-          // console.log(user)
+      firebase
+        .auth()
+        .sendPasswordResetEmail(email)
+        .then(() => {
           dispatch({
-            type: authConstants.SIGNIN_SUCCESS,
-            userId:user.email,
-            payload: JSON.stringify(user),
-            accessToken: result.credential.idToken,
+            type: authConstants.RESET_PASSWORD_SUCCESS,
+            payload: "Password reset link sent to your email",
           });
-
-          fetch(process.env.addUserEndpoint.concat("/users/add"), {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              firstname: user.displayName.split(' ')[0],
-              lastname: user.displayName.split(' ')[1]?user.displayName.split(' ')[1]:' ',
-              email: user.email,
-            }),
-          });
-          dispatch(getUserinfo(user.email))
         })
-        .catch((error) => {
-          // console.log(error)
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
+        .catch(() => {
           dispatch({
-            type: authConstants.SIGNIN_ERROR,
-            payload: errorMessage,
+            type: authConstants.RESET_PASSWORD_ERROR,
+            payload: "Some error resetting password",
           });
         });
     } catch (err) {
-      dispatch({ type: authConstants.SIGNIN_ERROR, payload: 'Invalid login credentials' });
+      dispatch({
+        type: authConstants.RESET_PASSWORD_ERROR,
+        payload: "Some error resetting password",
+      });
+    }
+  };
+
+export const updateEmail =
+  ({ currentpassword, currentemail, newemail }) =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(`/users/${newemail}`);
+      if (res != null) {
+        var user = firebase.auth().currentUser;
+        var cred = firebase.auth.EmailAuthProvider.credential(
+          currentemail,
+          currentpassword
+        );
+        await user
+          .reauthenticateWithCredential(cred)
+          .then(() => {
+            firebase.auth().onAuthStateChanged(async function (user) {
+              user.updateEmail(newemail);
+              dispatch({
+                type: authConstants.UPDATE_EMAIL_SUCCESS,
+                payload: "Email Updated",
+              });
+              const res = await axios.post(`/users/update`, {
+                email: currentemail,
+                newemail: newemail,
+              });
+            });
+          })
+          .catch(() => {
+            dispatch({
+              type: authConstants.UPDATE_EMAIL_ERROR,
+              payload: "Wrong Credential",
+            });
+          });
+      } else {
+        dispatch({
+          type: authConstants.UPDATE_EMAIL_ERROR,
+          payload: "User Already exists",
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: authConstants.UPDATE_EMAIL_ERROR,
+        payload: "Some error updating email",
+      });
+    }
+  };
+export const updatePassword =
+  ({ currentpassword, password }) =>
+  async (dispatch) => {
+    try {
+
+      var user = firebase.auth().currentUser;
+      var cred = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        currentpassword
+      );
+      await user
+        .reauthenticateWithCredential(cred)
+        .then(() => {
+          firebase.auth().onAuthStateChanged(function (user) {
+            user.updatePassword(password);
+            dispatch({
+              type: authConstants.UPDATE_PASSWORD_SUCCESS,
+              payload: "Password updated",
+            });
+          });
+        })
+        .catch(() => {
+          dispatch({
+            type: authConstants.UPDATE_PASSWORD_ERROR,
+            payload: "Wrong Credential",
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: authConstants.UPDATE_PASSWORD_ERROR,
+        payload: "Some error updating password",
+      });
     }
   };

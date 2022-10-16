@@ -98,20 +98,20 @@ const Signup = ({ login }) => {
                 onChange={(e) => setConfirmpassword(e.target.value)}
               />
             </div>
-            <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
+            {/* <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
         if(e.target.checked){
           setRole('admin')
         }
         else{
           setRole('user')
         }
-        }} />}/>
+        }} />}/> */}
             <div>{alert}</div>
             <Button type="submit" variant="outlined">
               Signup
             </Button>
             {login}
-            <a href="#">Forgot password?</a>
+            {/* <a href="#">Forgot password?</a> */}
           </div>
         </div>
       </form>
