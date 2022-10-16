@@ -279,10 +279,9 @@ export const updateEmail =
           currentemail,
           currentpassword
         );
-        await user
-          .reauthenticateWithCredential(cred)
-          .then(() => {
-            firebase.auth().onAuthStateChanged(async function (user) {
+        let use=await user.reauthenticateWithCredential(cred);
+        use.then(() => {
+            firebase.auth().onAuthStateChanged(async (user)=> {
               user.updateEmail(newemail);
               dispatch({
                 type: authConstants.UPDATE_EMAIL_SUCCESS,
