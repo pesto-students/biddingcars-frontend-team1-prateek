@@ -1,19 +1,45 @@
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import firebase, { tokenSignin, checkSignin } from "../actions/auth.action";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import DashboardDrawer from "../components/DashboardDrawer";
 import Reqsignin from "../components/Reqsignin";
 import Unauthorized from "../components/Unauthorized";
 import { Box, Card, CircularProgress, Paper, Typography } from "@mui/material";
 import { getTimeline } from "../actions/timeline.action";
 import Image from "next/image";
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import { useRouter } from "next/router";
 export default function Verifylistings() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
   const dispatch = useDispatch();
   const router = useRouter();
+  const pages = [{name:'My Listings',link:'/mylistings'},
+  {name:'My Bids',link:'/mybids'}];
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   const reduce = (string) => {
     if (string.length > 60) {
       return string.split("").splice(0, 50).join("") + "...";
@@ -42,7 +68,17 @@ export default function Verifylistings() {
           flexWrap: "wrap",
           alignItems: "center",
         }}
-      >
+      ><div style={{marginLeft:'240px'}}>
+        <List sx={{display: '-webkit-box',}}>
+        {pages.map((page) => (
+          <ListItem key={page.name} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }} onClick={()=>router.push(page.link)}>
+              <ListItemText primary={page.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
@@ -62,7 +98,7 @@ export default function Verifylistings() {
             >
               <div style={{ margin: "5px" }}>
                 <Paper
-                  onClick={() => {s
+                  onClick={() => {
                     router.push(`/auction/${car._id}`);
                   }}
                   elevation={5}
@@ -152,8 +188,7 @@ export default function Verifylistings() {
                   justifyContent: "space-evenly",
                 }}
               >
-                <button>Verify</button>
-                <button>Reject</button>
+                <button>Ongoing</button>
               </div>
             </div>
           ))

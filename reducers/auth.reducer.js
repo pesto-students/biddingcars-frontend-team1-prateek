@@ -64,6 +64,49 @@ export default (state = initState, action) => {
         };
 
         break;
+
+        case authConstants.UPDATE_PASSWORD_SUCCESS:
+          state = {
+            ...state,
+            message: action.payload,
+          };
+
+        break;
+        case authConstants.UPDATE_PASSWORD_ERROR:
+          state = {
+            ...state,
+            message: action.payload,
+          };
+
+        break;
+        case authConstants.UPDATE_EMAIL_SUCCESS:
+          state = {
+            ...state,
+            message: action.payload,
+          };
+
+        break;
+        case authConstants.UPDATE_EMAIL_ERROR:
+          state = {
+            ...state,
+            message: action.payload,
+          };
+
+        break;
+        case authConstants.RESET_PASSWORD_SUCCESS:
+          state = {
+            ...state,
+            message: action.payload,
+          };
+
+        break;
+        case authConstants.RESET_PASSWORD_ERROR:
+          state = {
+            ...state,
+            message: action.payload,
+          };
+
+        break;
   }
   return state;
 };

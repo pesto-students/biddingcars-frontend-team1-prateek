@@ -23,7 +23,7 @@ import { userinfoConstants } from "../actions/constants";
 import { useRouter } from "next/router";
 import { AiFillCar } from "react-icons/ai";
 import Logo from "./Logo";
-
+import Forgotpassword from "./Forgotpassword";
 const drawerWidth = 300;
 const navItems = [
   { name: "Auctions", link: "/auctions" },
@@ -57,7 +57,47 @@ function Navbar(props) {
   };
 
   const [authScreen, setAuthScreen] = React.useState("login");
-
+  const page = () => {
+    switch (authScreen) {
+      case 'login':
+        return <Signin
+        createAccount={
+          <>
+          <Button onClick={() => setAuthScreen("signup")}>
+            Create account
+          </Button>
+          <Button onClick={() => setAuthScreen("forgotpassword")}>
+            Forgot Password?
+          </Button></>
+        }
+      />
+      case 'signup':
+        return <Signup
+        login={
+          <>
+          <Button onClick={() => setAuthScreen("login")}>
+            Already have an account?
+          </Button>
+          <Button onClick={() => setAuthScreen("forgotpassword")}>
+            Forgot Password?
+          </Button>
+          </>
+        }
+      />
+      case 'forgotpassword':
+        return <Forgotpassword
+        forgot={
+          <>
+          <Button onClick={() => setAuthScreen("login")}>
+            Already have an account?
+          </Button>
+          <Button onClick={() => setAuthScreen("signup")}>
+          Create account
+        </Button></>
+        }
+      />
+    }
+  };
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 350 }}
@@ -65,7 +105,7 @@ function Navbar(props) {
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
     >
-      {authScreen === "login" ? (
+      {/* {authScreen === "login" ? (
         <Signin
           createAccount={
             <Button onClick={() => setAuthScreen("signup")}>
@@ -81,9 +121,8 @@ function Navbar(props) {
             </Button>
           }
         />
-      )}
-
-      {/* <Signup/> */}
+      )} */}
+      {page()}
       <Divider />
     </Box>
   );
