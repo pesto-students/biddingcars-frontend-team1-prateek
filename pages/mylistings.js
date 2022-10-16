@@ -33,7 +33,7 @@ export default function Verifylistings() {
 
   return !auth.authenticate ? (
     <Reqsignin />
-  ) : auth.role == "admin" ? (
+  ) :  (
     <div>
       <Head>
         <title>Create Next App</title>
@@ -175,7 +175,5 @@ export default function Verifylistings() {
         )}
       </Box>
     </div>
-  ) : (
-    <Unauthorized />
-  );
+  ) ;
 }
