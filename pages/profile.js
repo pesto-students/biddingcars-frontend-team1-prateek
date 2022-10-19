@@ -26,7 +26,7 @@ export default function Profile() {
   }, []);
 
   const handleEdit = () => {
-    dispatch(postUserinfo(userinfo))
+    dispatch(postUserinfo(userinfo,auth.accessToken,userinfo))
   };
   return !auth.authenticate ? (
     <Reqsignin />
