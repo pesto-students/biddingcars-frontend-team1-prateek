@@ -14,6 +14,7 @@ import Image from 'next/image';
 export default function List() {
   const router = useRouter();
   const auth = useSelector((state) => state.auth);
+  const userinfo = useSelector((state) => state.userinfo);
   const dispatch = useDispatch();
 
   const [front, setFront] = useState([]);
@@ -57,7 +58,7 @@ export default function List() {
       form.append('image', pic);
     }
 
-    dispatch(listCar(form));
+    dispatch(listCar(form,auth.accessToken,userinfo));
     router.push('/auctions');
   };
 

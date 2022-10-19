@@ -31,7 +31,7 @@ export default function Settings() {
   const [currentpassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
-  const [page, setPage] = useState("updatePasswordTemp");
+  const [page, setPage] = useState("updateEmailTemp")
   const pages = [{name:'Update Email',link:'updateEmailTemp'},
   {name:'Update Password',link:'updatePasswordTemp'}];
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Settings() {
     dispatch(getTimeline());
   }, []);
   const changeEmail = async (currentpassword, currentemail, newemail) => {
-    dispatch(updateEmail({ currentpassword, currentemail, newemail }));
+    dispatch(updateEmail({ currentpassword, currentemail, newemail ,userinfo}));
   };
 
   const changePassword = (currentpassword, password, confirmpassword) => {

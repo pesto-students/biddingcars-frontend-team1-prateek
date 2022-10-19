@@ -3,10 +3,12 @@ import axios from "../helpers/axios";
 import { toast } from 'react-toastify';
 
 
-export const listCar = (form) => async (dispatch) => {
+export const listCar = (form,token,userinfo) => async (dispatch) => {
     try {
       dispatch({ type: listConstants.POST_LIST_REQUEST });
-      const res = await axios.post(`/cars/add`,form);
+      console.log('form',form,userinfo)
+      const res = await axios.post(`/cars/add`,form
+      ,{ headers: { Authorization: "Bearer " + token ,user:JSON.stringify(userinfo)}});
       if (res.status === 200) {
         dispatch({ type: listConstants.POST_LIST_SUCCESS, payload: res.data });
         toast('Car resistered for approval !', { type: 'success' })
