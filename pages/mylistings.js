@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import firebase, { tokenSignin, checkSignin } from "../actions/auth.action";
+import styles from '../styles/Home.module.css';
 import React, { useEffect } from "react";
 import DashboardDrawer from "../components/DashboardDrawer";
 import Reqsignin from "../components/Reqsignin";
@@ -71,6 +72,7 @@ export default function Verifylistings() {
                 display: "flex",
                 flexDirection: "row",
                 border: "solid #90caf9 3px",
+                // position: 'absolute',
                 borderRadius: "10px",
                 marginLeft: "240px",
                 marginTop: "15px",
@@ -86,6 +88,8 @@ export default function Verifylistings() {
                     width: { xs: "60vw", sm: "34vw", md: "20vw" },
                     borderRadius: "10px",
                     padding: "5px",
+                    // position: 'absolute',npm run dev
+                    position: 'relative',
                     marginBottom: "20px",
                     cursor: "pointer",
                   }}

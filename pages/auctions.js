@@ -22,7 +22,7 @@ export default function Auctions() {
 
   const reduce = (string) => {
     if (string.length > 60) {
-      
+
       return string.split('').splice(0, 50).join('')+'...';
     }
     return string

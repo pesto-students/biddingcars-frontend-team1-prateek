@@ -91,7 +91,7 @@ const Signin = ({ createAccount }) => {
             <Button
               type="submit"
               onClick={() => {
-                setEmail("dummy@dummy.com");
+                setEmail("dummy@gmail.com");
                 setPassword("dummy123");
               }}
               variant="outlined"
