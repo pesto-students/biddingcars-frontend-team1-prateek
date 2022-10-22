@@ -79,7 +79,12 @@ export default (state = initState, action) => {
           };
 
           break;
+          case userinfoConstants.USERINFO_NULL:
+            state = {
+              ...initState
+            };
 
+            break;
   }
   return state;
 };

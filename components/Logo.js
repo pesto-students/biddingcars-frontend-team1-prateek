@@ -17,7 +17,7 @@ const Logo = () => {
       }}
     >
       <Box sx={{mr:'1em'}}>BIDDING</Box>
-      
+
       <Box
         sx={{
           display: 'flex',

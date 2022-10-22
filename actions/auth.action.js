@@ -1,4 +1,4 @@
-import { authConstants } from "./constants";
+import { authConstants, userinfoConstants } from "./constants";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -30,21 +30,21 @@ export const checkSignin = () => async (dispatch) => {
       if (user) {
         let role;
 
-          const res = await axios.get(`/users/${user.email}`, {
-            headers: {
-              Authorization: "Bearer " + user.multiFactor.user.accessToken,
-            }
-          });
-          role = res.data.role ? res.data.role : "user";
+        const res = await axios.get(`/users/${user.email}`, {
+          headers: {
+            Authorization: "Bearer " + user.multiFactor?.user.accessToken,
+          },
+        });
+        role = res.data?.role ? res.data.role : "user";
         dispatch({
           type: authConstants.SIGNIN_SUCCESS,
           userId: user.email,
           payload: JSON.stringify(user),
-          accessToken: user.multiFactor.user.accessToken,
+          accessToken: user.multiFactor?.user.accessToken,
           role: role,
         });
         // dispatch(getUserinfo(user.email));
-        dispatch(getUserinfo(user.email, user.multiFactor.user.accessToken));
+        dispatch(getUserinfo(user.email, user.multiFactor?.user.accessToken));
       } else {
         dispatch({
           type: authConstants.SIGNIN_ERROR,
@@ -57,7 +57,7 @@ export const checkSignin = () => async (dispatch) => {
       type: authConstants.SIGNIN_ERROR,
       payload: "Invalid login credentials",
     });
-    toast("Invalid login credentials",{type:"error"})
+    toast("Invalid login credentials", { type: "error" });
   }
 };
 
@@ -75,14 +75,20 @@ export const signup =
         })
         .then((dataAfterEmail) => {
           firebase.auth().onAuthStateChanged(async function (user) {
-            await axios.post(`users/add/`,{
-                  firstname: fname,
-                  lastname: lname,
-                  email: email,
-                  role: role,
-                }, {
-              headers: { Authorization: "Bearer " + user.multiFactor.user.accessToken },
-              });
+            await axios.post(
+              `users/add/`,
+              {
+                firstname: fname,
+                lastname: lname,
+                email: email,
+                role: role,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + user.multiFactor?.user.accessToken,
+                },
+              }
+            );
             // if (user.emailVerified) {
             // console.log(user)
             // Emailconsole is verified
@@ -136,7 +142,7 @@ export const signin =
               role: role,
             });
             dispatch(
-              getUserinfo(user.email, user.multiFactor.user.accessToken)
+              getUserinfo(user.email, user.multiFactor?.user.accessToken)
             );
           });
         })
@@ -145,7 +151,7 @@ export const signin =
             type: authConstants.SIGNIN_ERROR,
             payload: "Invalid login credentials",
           });
-          toast("Invalid login credentials",{type:"error"})
+          toast("Invalid login credentials", { type: "error" });
         });
     } catch (err) {
       dispatch({
@@ -163,6 +169,7 @@ export const signout = () => async (dispatch) => {
       .signOut()
       .then(() => {
         dispatch({ type: authConstants.SIGNOUT_SUCCESS });
+        dispatch({ type: userinfoConstants.USERINFO_NULL });
       })
       .catch(() => {
         dispatch({
@@ -187,32 +194,41 @@ export const googleSignIn = () => async (dispatch) => {
       .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
 
-        firebase.auth().currentUser.getIdToken(true).then(async function(idToken){
-          const user = result.user;
-        dispatch({
-          type: authConstants.SIGNIN_SUCCESS,
-          userId: user.email,
-          payload: JSON.stringify(user),
-          accessToken: idToken,
-        });
+        firebase
+          .auth()
+          .currentUser.getIdToken(true)
+          .then(async function (idToken) {
+            const user = result.user;
+            dispatch({
+              type: authConstants.SIGNIN_SUCCESS,
+              userId: user.email,
+              payload: JSON.stringify(user),
+              accessToken: idToken,
+            });
 
-        let data={
-          firstname: user.displayName.split(" ")[0],
-          lastname: user.displayName.split(" ")[1]
-            ? user.displayName.split(" ")[1]
-            : " ",
-          email: user.email,
-          role: "user",
-        }
-        console.log('reached hereeeeeeeeee',data)
-        await axios.post(`users/add/`,data, {
-      headers: { Authorization: "Bearer " + idToken },
-      });
-        console.log('======user',user)
-        // dispatch(getUserinfo(user.email));
-        dispatch(getUserinfo(user.email, idToken));
-        })
-
+            let data = {
+              firstname: user.displayName.split(" ")[0],
+              lastname: user.displayName.split(" ")[1]
+                ? user.displayName.split(" ")[1]
+                : " ",
+              email: user.email,
+              role: "user",
+            };
+            console.log("reached hereeeeeeeeee", data);
+            await axios
+              .post(`users/add/`, data, {
+                headers: { Authorization: "Bearer " + idToken },
+              })
+              .catch((err) => {
+                dispatch({
+                  type: authConstants.SIGNIN_ERROR,
+                  payload: err.message,
+                });
+              });
+            console.log("======user", user);
+            // dispatch(getUserinfo(user.email));
+            dispatch(getUserinfo(user.email, idToken));
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -227,7 +243,7 @@ export const googleSignIn = () => async (dispatch) => {
       type: authConstants.SIGNIN_ERROR,
       payload: "Invalid login credentials",
     });
-    toast("Invalid login credentials",{type:"error"})
+    toast("Invalid login credentials", { type: "error" });
   }
 };
 
@@ -259,61 +275,70 @@ export const resetPassword =
   };
 
 export const updateEmail =
-  ({ currentpassword, currentemail, newemail,userinfo }) =>
+  ({ currentpassword, currentemail, newemail, userinfo }) =>
   async (dispatch) => {
     try {
-      console.log('-----res------')
-      firebase.auth().onAuthStateChanged(async function (user)  {
-      let res = await axios.get(`/users/${newemail}`,
-      {  headers: { Authorization: "Bearer " + user.multiFactor.user.accessToken ,user:JSON.stringify(userinfo)},}
-      );
-      if (res != null) {
-        var user = firebase.auth().currentUser;
-        var cred = firebase.auth.EmailAuthProvider.credential(
-          currentemail,
-          currentpassword
-        );
-        let use = await user.reauthenticateWithCredential(cred);
-        if(use) {
+
+      firebase.auth().onAuthStateChanged(async (user) => {
+        let res = await axios.get(`/users/${newemail}`, {
+          headers: {
+            Authorization: "Bearer " + user.multiFactor?.user.accessToken,
+            user: JSON.stringify(userinfo),
+          },
+        });
+        if (res != null) {
+          var user = firebase.auth().currentUser;
+          var cred = firebase.auth.EmailAuthProvider.credential(
+            currentemail,
+            currentpassword
+          );
+          console.log(cred)
+          let use = await user.reauthenticateWithCredential(cred).then(use=>{
             firebase.auth().onAuthStateChanged(async (user) => {
-              try{user.updateEmail(newemail);
-                console.log(user)
+              try {
+                user.updateEmail(newemail);
+                console.log(user);
                 dispatch({
                   type: authConstants.UPDATE_EMAIL_SUCCESS,
                   payload: "Email Updated",
                 });
-                const res = await axios.post(`users/update/`,{email: currentemail,
-                  newemail: newemail}, {
-                  headers: { Authorization: "Bearer " + user.multiFactor.user.accessToken,user:JSON.stringify(userinfo) },
-                  });
-                toast("Email updated Successfully", { type: 'success' })
+                const res = await axios.post(
+                  `users/update/`,
+                  { email: currentemail, newemail: newemail },
+                  {
+                    headers: {
+                      Authorization:
+                        "Bearer " + user.multiFactor?.user.accessToken,
+                      user: JSON.stringify(userinfo),
+                    },
+                  }
+                );
+                toast("Email updated Successfully", { type: "success" });
+              } catch (err) {
+                toast(err, { type: "error" });
               }
-              catch(err){
-                toast(err,{type:'error'})
-              }
-
             });
-          }else {
+          }).catch(error=>{
             dispatch({
               type: authConstants.UPDATE_EMAIL_ERROR,
-              payload: "Wrong Credential",
+              payload: error.code,
             });
-            toast("Wrong Credential", { type: 'error' })
-          };
-      } else {
-        dispatch({
-          type: authConstants.UPDATE_EMAIL_ERROR,
-          payload: "User Already exists",
-        });
-        toast("User Already exists", { type: 'error' })
-      }
-      })
+            toast(error.code, { type: "error" });
+          });
+        } else {
+          dispatch({
+            type: authConstants.UPDATE_EMAIL_ERROR,
+            payload: "User Already exists",
+          });
+          toast("User Already exists", { type: "error" });
+        }
+      });
     } catch (err) {
       dispatch({
         type: authConstants.UPDATE_EMAIL_ERROR,
         payload: "Some error updating email",
       });
-      toast("Some error updating email", { type: 'error' })
+      toast("Some error updating email", { type: "error" });
     }
   };
 export const updatePassword =
@@ -334,7 +359,7 @@ export const updatePassword =
               type: authConstants.UPDATE_PASSWORD_SUCCESS,
               payload: "Password updated Successfully",
             });
-            toast("Password updated Successfully", { type: 'success' })
+            toast("Password updated Successfully", { type: "success" });
           });
         })
         .catch(() => {
@@ -342,11 +367,13 @@ export const updatePassword =
             type: authConstants.UPDATE_PASSWORD_ERROR,
             payload: "Wrong Credential",
           });
+          toast("Wrong Credential", { type: "error" });
         });
     } catch (err) {
       dispatch({
         type: authConstants.UPDATE_PASSWORD_ERROR,
         payload: "Some error updating password",
       });
+      toast("Some error updating password", { type: "error" });
     }
   };
