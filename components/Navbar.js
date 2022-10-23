@@ -269,6 +269,7 @@ function Navbar(props) {
         {!auth.authenticate ? (
           <div>
             <Button
+            id="signin-btn"
               variant="outlined"
               size="large"
               sx={{

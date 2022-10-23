@@ -9,9 +9,11 @@ import { Box, Card, CircularProgress, Paper, Typography } from "@mui/material";
 import { getTimeline } from "../actions/timeline.action";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { verifyCar,rejectCar } from "../actions/list.action";
 export default function Verifylistings() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
+  const userinfo = useSelector((state) => state.userinfo);
   const dispatch = useDispatch();
   const router = useRouter();
   const reduce = (string) => {
@@ -46,7 +48,7 @@ export default function Verifylistings() {
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
-          timeline.timeline.map((car, index) => (
+          timeline.timeline.filter((data)=>{return data.status=='pending for approval'}).map((car, index) => (
             <div
               key={index}
               style={{
@@ -62,7 +64,7 @@ export default function Verifylistings() {
             >
               <div style={{ margin: "5px" }}>
                 <Paper
-                  onClick={() => {s
+                  onClick={() => {
                     router.push(`/auction/${car._id}`);
                   }}
                   elevation={5}
@@ -152,8 +154,8 @@ export default function Verifylistings() {
                   justifyContent: "space-evenly",
                 }}
               >
-                <button>Verify</button>
-                <button>Reject</button>
+                <button onClick={()=>{dispatch(verifyCar(car._id,'approved',auth.accessToken,userinfo))}}>Verify</button>
+                <button onClick={()=>{dispatch(rejectCar(car._id,'rejected',auth.accessToken,userinfo))}}>Reject</button>
               </div>
             </div>
           ))
