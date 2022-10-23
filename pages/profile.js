@@ -139,7 +139,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{lastName: event.target.value},
                   });
                 }}/>
@@ -163,7 +162,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{address: event.target.value},
                   });
                 }}/>
@@ -176,7 +174,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{city: event.target.value},
                   });
                 }} />
@@ -187,7 +184,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{state: event.target.value},
                   });
                 }}/>
@@ -200,7 +196,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{zipCode: event.target.value},
                   });
                 }}/>
@@ -211,7 +206,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{country: event.target.value},
                   });
                 }} />
@@ -224,7 +218,6 @@ export default function Profile() {
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
-                    // lastname: event.target.value,
                     state:{mobile: event.target.value},
                   });
                 }}/>

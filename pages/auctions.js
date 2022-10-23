@@ -44,7 +44,7 @@ export default function Auctions() {
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
-          timeline.timeline.map((car, index) => (
+          timeline.timeline.filter((car)=>{return car.status=='approved'}).map((car, index) => (
             <div key={index}>
               <Paper
                 onClick={() => {
@@ -92,7 +92,7 @@ export default function Auctions() {
                       elevation={0}
                       variant="outlined"
                     >
-                      🕧 10 days &nbsp;Rs 54,00,000
+                      🕧 10 days &nbsp;Rs {car.currentBid}
                     </Paper>
                   </Box>
                   <Box>
