@@ -53,7 +53,6 @@ export default function List() {
     form.append('condition', condition);
     form.append('basePrice', basePrice);
     form.append('fullPrice', fullPrice);
-    form.append('status', 'pending for approval');
 
     for (let pic of file) {
       form.append('image', pic);

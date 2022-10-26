@@ -43,6 +43,9 @@ export const checkSignin = () => async (dispatch) => {
           accessToken: user.multiFactor?.user.accessToken,
           role: role,
         });
+        console.log(window.localStorage)
+        if(!window.localStorage.getItem('token'))
+        window.localStorage.setItem('token', user.multiFactor?.user.accessToken);
         // dispatch(getUserinfo(user.email));
         dispatch(getUserinfo(user.email, user.multiFactor?.user.accessToken));
       } else {
@@ -144,6 +147,8 @@ export const signin =
             dispatch(
               getUserinfo(user.email, user.multiFactor?.user.accessToken)
             );
+            if(typeof window !== 'undefined')
+            window.localStorage.setItem('token', user.multiFactor?.user.accessToken);
           });
         })
         .catch((err) => {
@@ -169,6 +174,7 @@ export const signout = () => async (dispatch) => {
       .signOut()
       .then(() => {
         dispatch({ type: authConstants.SIGNOUT_SUCCESS });
+        window.localStorage.clear();
         dispatch({ type: userinfoConstants.USERINFO_NULL });
       })
       .catch(() => {
@@ -205,7 +211,7 @@ export const googleSignIn = () => async (dispatch) => {
               payload: JSON.stringify(user),
               accessToken: idToken,
             });
-
+            window.localStorage.setItem('token', idToken);
             let data = {
               firstname: user.displayName.split(" ")[0],
               lastname: user.displayName.split(" ")[1]
