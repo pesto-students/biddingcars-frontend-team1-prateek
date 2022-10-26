@@ -1,8 +1,9 @@
 import { timelineConstants } from '../actions/constants';
 
 const initState = {
-    waiting: false,
-    timeline:[]
+  waiting: false,
+  timeline: [],
+  currentHistory: [],
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -30,6 +31,13 @@ export default (state = initState, action) => {
       };
 
       break;
-    }
-    return state;
+    case timelineConstants.GET_HISTORY_SUCCESS:
+      state = {
+        ...state,
+        currentHistory: action.payload,
+      };
+
+      break;
+  }
+  return state;
 };
