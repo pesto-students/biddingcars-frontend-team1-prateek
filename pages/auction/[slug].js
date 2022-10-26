@@ -5,8 +5,7 @@ import { Button, TextField, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { getTimeline } from '../../actions/timeline.action';
-import { SettingsCellSharp } from '@mui/icons-material';
+import { getTimeline,getHistory } from '../../actions/timeline.action';
 import Image from 'next/image';
 import BidDialog from '../../components/BidDialog';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
@@ -14,6 +13,7 @@ import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mu
 import { toast } from 'react-toastify';
 import { postBid } from '../../actions/bidding.action';
 import { checkSignin } from '../../actions/auth.action';
+import AuctionHistory from '../../components/AuctionHistory';
 
 const AuctionDetail = () => {
   const router = useRouter();
@@ -399,6 +399,7 @@ const AuctionDetail = () => {
             >
               Place Bid
             </Button>
+            
           </Paper>
           <Dialog open={open} onClose={handleClose}>
             {page()}
@@ -517,6 +518,8 @@ const AuctionDetail = () => {
             <Box sx={{ fontSize: '22px', color: 'text.secondary', mb: '10px' }}>Condition</Box>
             {car?.condition}
           </Box>
+          <Box></Box>
+          <AuctionHistory id={car?._id} />
         </Box>
       </Box>
     </div>

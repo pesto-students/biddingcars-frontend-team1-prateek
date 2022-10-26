@@ -28,6 +28,14 @@ export default function Auctions() {
     return string
   };
 
+  const toIndianCurrency = (num) => {
+    const curr = num?.toLocaleString('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    });
+    return curr;
+  };
+
   useEffect(() => {
     dispatch(getTimeline());
   }, []);
@@ -92,7 +100,7 @@ export default function Auctions() {
                       elevation={0}
                       variant="outlined"
                     >
-                      🕧 10 days &nbsp;Rs {car.currentBid}
+                      🕧 10 days &nbsp; {toIndianCurrency(car.currentBid)}
                     </Paper>
                   </Box>
                   <Box>

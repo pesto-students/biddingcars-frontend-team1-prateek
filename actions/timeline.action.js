@@ -25,8 +25,8 @@ export const getHistory = (id) => async (dispatch) => {
     dispatch({ type: timelineConstants.GET_HISTORY_REQUEST });
     const res = await axios.get(`/cars/${id}/history`);
     if (res.status === 200) {
-      // console.log(res.data)
-      dispatch({ type: timelineConstants.GET_HISTORY_SUCCESS, payload: res.data });
+      console.log(res.data.history.timeline)
+      dispatch({ type: timelineConstants.GET_HISTORY_SUCCESS, payload: res.data.history.timeline });
       // toast('Live Auctions loaded', { type: 'success' })
     } else {
       dispatch({ type: timelineConstants.GET_HISTORY_FAILURE });
