@@ -20,6 +20,7 @@ import {
 import { useState } from "react";
 import { getTimeline } from "../actions/timeline.action";
 import List from "@mui/material/List";
+import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
@@ -52,11 +53,11 @@ export default function Settings() {
   };
   const updateEmailTemp = () => {
     return (
-      <div style={main}>
+      <Box sx={main}>
         <div style={{ marginLeft: "20px" }}>
           <h4>Update Email</h4>
         </div>
-        <div style={rowfull}>
+        <Box sx={rowfull}>
           <div style={col_label}>
             <label style={txtlabel}>Current Password</label>
           </div>
@@ -70,8 +71,8 @@ export default function Settings() {
               required
             />
           </div>
-        </div>
-        <div style={rowfull}>
+        </Box>
+        <Box sx={rowfull}>
           <div style={col_label}>
             <label style={txtlabel}>Email</label>
           </div>
@@ -86,8 +87,8 @@ export default function Settings() {
               defaultValue={userinfo.email}
             />
           </div>
-        </div>
-        <div style={btn}>
+        </Box>
+        <Box sx={btn}>
           <Button
             variant="contained"
             size="small"
@@ -97,8 +98,8 @@ export default function Settings() {
           >
             Change Email
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   };
   const step = () => {
@@ -111,11 +112,11 @@ export default function Settings() {
   };
   const updatePasswordTemp = () => {
     return (
-      <div style={main}>
+      <Box sx={main}>
         <div style={{ marginLeft: "20px" }}>
           <h4>Update Password</h4>
         </div>
-        <div style={rowfull}>
+        <Box sx={rowfull}>
           <div style={col_label}>
             <label style={txtlabel}>Current Password</label>
           </div>
@@ -129,8 +130,8 @@ export default function Settings() {
               required
             />
           </div>
-        </div>
-        <div style={rowfull}>
+        </Box>
+        <Box sx={rowfull}>
           <div style={col_label}>
             <label style={txtlabel}>New Password</label>
           </div>
@@ -144,8 +145,8 @@ export default function Settings() {
               required
             />
           </div>
-        </div>
-        <div style={rowfull}>
+        </Box>
+        <Box sx={rowfull}>
           <div style={col_label}>
             <label style={txtlabel}>Confirm New Password</label>
           </div>
@@ -159,8 +160,8 @@ export default function Settings() {
               required
             />
           </div>
-        </div>
-        <div style={btn}>
+        </Box>
+        <Box sx={btn}>
           <Button
             variant="contained"
             size="small"
@@ -171,8 +172,8 @@ export default function Settings() {
           >
             Change Password
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   };
   return !auth.authenticate ? (
@@ -185,7 +186,7 @@ export default function Settings() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DashboardDrawer />
-      <div style={{ width: "170px", marginLeft: "230px" }}>
+      <Box sx={{ width: "160px",marginLeft: { xs: "30px", sm: "150px", md: "230px" },}}>
         <List sx={{ display: "-webkit-box" }}>
           {pages.map((page) => (
             <ListItem key={page.name} disablePadding>
@@ -196,25 +197,25 @@ export default function Settings() {
             </ListItem>
           ))}
         </List>
-      </div>
+      </Box>
       {step()}
     </div>
   );
 }
 const main = {
   height: "auto",
-  width: "470px",
   display: "flex",
   flexDirection: "column",
   // border: "solid #90caf9 3px",
   borderRadius: "10px",
-  marginLeft: "240px",
+  // marginLeft: "240px",
+  marginLeft: { xs: "30px", sm: "150px", md: "240px" },
   marginTop: "15px",
 };
 const rowfull = {
   display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
+  flexDirection:{xs:"column",md: "row"},
+  alignItems:{xs:"none",md: "center"},
   width: "auto",
   marginTop: "5px",
 };
@@ -228,8 +229,10 @@ const col = {
 };
 const txtlabel = { fontSize: "14px", width: "270px" };
 const btn = {
-  marginTop: "10px",
+  marginTop: "30px",
   marginRight: "20px",
   display: "flex",
-  justifyContent: "flex-end",
+  // justifyContent: "flex-end",
+  flexDirection: "row-reverse",
+  width:{ xs: "70vw",sm:'40vw', md: "33vw" },
 };
