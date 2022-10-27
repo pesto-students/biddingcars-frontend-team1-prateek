@@ -56,6 +56,7 @@ export default function DashboardDrawer(props) {
         <Box
           sx={{
             display: { xs: "none", sm: "block" },
+            width: { xs: "55px", sm: "150px", md: "240px" },
             display: "flex",
             alignItems: "left",
             flexDirection: "column",

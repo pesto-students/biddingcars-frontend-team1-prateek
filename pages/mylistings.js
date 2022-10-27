@@ -45,11 +45,11 @@ export default function Verifylistings() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          // justifyContent: "space-between",
           flexWrap: "wrap",
           alignItems: "center",
         }}
-      ><div style={{marginLeft:'240px'}}>
+      ><Box sx={{ width: "150px",marginLeft: { xs: "55px", sm: "150px", md: "230px" },}}>
         <List sx={{display: '-webkit-box',}}>
         {pages.map((page) => (
           <ListItem key={page.name} disablePadding>
@@ -59,22 +59,24 @@ export default function Verifylistings() {
           </ListItem>
         ))}
       </List>
-    </div>
+    </Box>
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
           timeline.timeline.map((car, index) => (
-            <div
+            <Box
               key={index}
-              style={{
-                height: "175px",
-                width: "1050px",
+              sx={{
+                // height: "175px",
+                height: "auto",
+                // height: {xs:"60vh",md:"27vh"},
+                width: "80vw",
+                // width: { xs: "60vw", sm: "150px", md: "1050px" },
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: {xs:"column",md:"row"},
                 border: "solid #90caf9 3px",
-                // position: 'absolute',
                 borderRadius: "10px",
-                marginLeft: "240px",
+                marginLeft: { xs: "55px", sm: "150px", md: "240px" },
                 marginTop: "15px",
               }}
             >
@@ -85,12 +87,12 @@ export default function Verifylistings() {
                   }}
                   elevation={5}
                   sx={{
-                    width: { xs: "60vw", sm: "34vw", md: "20vw" },
+                    width: { xs: "76vw", md: "20vw" },
                     borderRadius: "10px",
                     padding: "5px",
                     // position: 'absolute',npm run dev
                     position: 'relative',
-                    marginBottom: "20px",
+                    // marginBottom: "20px",
                     cursor: "pointer",
                   }}
                   variant="outlined"
@@ -122,6 +124,7 @@ export default function Verifylistings() {
                     justifyContent: "left",
                     alignItems: "center",
                     height: "35px",
+                    width:'30vw',
                     background: "primary",
                     pt: "20px",
                     px: "10px",
@@ -141,15 +144,18 @@ export default function Verifylistings() {
                     height: "35px",
                     padding: "10px",
                     color: "text.secondary",
-                    py: "30px",
+                    py: "50px",
                     px: "10px",
                     fontSize: "15px",
+                    flexWrap:'nowrap',
                   }}
                 >
-                  <div
-                    style={{
-                      width: "600px",
-                      display: "flex",
+                  <Box
+                    sx={{
+                      width: "50vw",
+                      display: "inline-flex",
+                      flexDirection: {xs:'column',sm:'column',md:'row'},
+                      flexWrap:'wrap',
                       justifyContent: "space-between",
                     }}
                   >
@@ -158,13 +164,13 @@ export default function Verifylistings() {
                     <div>🕧 10 days &nbsp;</div>
                     <div>Total Bids: {89}</div>
                     <div>Base Price: ₹{car.basePrice}</div>
-                  </div>
+                  </Box>
                 </Box>
                 {reduce(car.condition)}
               </Box>
-              <div
+              <Box
                 style={{
-                  height: "160px",
+                  height: {xs:"20px",md:"160px"},
                   margin: "5px",
                   width: "80px",
                   display: "flex",
@@ -173,8 +179,8 @@ export default function Verifylistings() {
                 }}
               >
                 <button>Verified</button>
-              </div>
-            </div>
+              </Box>
+            </Box>
           ))
         )}
       </Box>

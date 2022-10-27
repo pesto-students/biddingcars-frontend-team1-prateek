@@ -52,8 +52,10 @@ export default function Verifylistings() {
             <div
               key={index}
               style={{
-                height: "175px",
-                width: "1050px",
+                // height: "175px",
+                // width: "1050px",
+                width: { xs: "60vw", sm: "80vw", md: "100vw" },
+                height: { xs: "60vw", sm: "50vw", md: "40vw" },
                 display: "flex",
                 flexDirection: "row",
                 border: "solid #90caf9 3px",

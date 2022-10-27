@@ -33,70 +33,73 @@ export default function Profile() {
   ) : disabledForm ? (
     <Fragment>
       <DashboardDrawer />
-      <div
+      <Box
         className="profile-card"
-        style={{ marginLeft: "226px", padding: "20px" }}
+        sx={{
+        marginLeft: { xs: "55px", sm: "150px", md: "240px" },
+        width:{ xs: "80vw", sm: "50vw", md: "40vw" },
+        padding: "20px" }}
       >
-        <div style={profilepic}></div>
-        <div className="gen-info" style={{ marginTop: "10px" }}>
+        <Box sx={profilepic}></Box>
+        <Box className="gen-info" sx={{ marginTop: "10px" }}>
           <h3>User Information</h3>
-          <div style={col}>
-            <div style={rowhalf}>
-              <div style={col}>
-                <label style={txtlabel}>First Name</label>
+          <Box sx={col}>
+            <Box sx={rowhalf}>
+              <Box sx={col2}>
+                <label sx={txtlabel}>First Name</label>
                 <TextField disabled size="small" value={userinfo.firstName} />
-              </div>
-              <div style={col}>
-                <label style={txtlabel}>Last Name</label>
+              </Box>
+              <Box sx={col2}>
+                <label sx={txtlabel}>Last Name</label>
                 <TextField disabled size="small" value={userinfo.lastName} />
-              </div>
-            </div>
-            <div style={rowfull}>
-              <div style={col}>
-                <label style={txtlabel}>Email</label>
+              </Box>
+            </Box>
+            <Box sx={rowfull}>
+              <Box sx={col}>
+                <label sx={txtlabel}>Email</label>
                 <TextField disabled size="small" value={userinfo.email} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="gen-info" style={{ marginTop: "40px" }}>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box className="gen-info" sx={{ marginTop: "40px" }}>
           <h3>Contact Information</h3>
-          <div style={col}>
-            <div style={rowfull}>
-              <div style={col}>
-                <label style={txtlabel}>Address</label>
+          <Box sx={col}>
+            <Box sx={rowfull}>
+              <Box sx={col}>
+                <label sx={txtlabel}>Address</label>
                 <TextField disabled size="small" value={userinfo.address} />
-              </div>
-            </div>
-            <div style={rowhalf}>
-              <div style={col}>
-                <label style={txtlabel}>City</label>
+              </Box>
+            </Box>
+            <Box sx={rowhalf}>
+              <Box sx={col2}>
+                <label sx={txtlabel}>City</label>
                 <TextField disabled size="small" value={userinfo.city} />
-              </div>
-              <div style={col}>
-                <label style={txtlabel}>State</label>
+              </Box>
+              <Box sx={col2}>
+                <label sx={txtlabel}>State</label>
                 <TextField disabled size="small" value={userinfo.state} />
-              </div>
-            </div>
-            <div style={rowhalf}>
-              <div style={col}>
-                <label style={txtlabel}>Zip Code</label>
+              </Box>
+            </Box>
+            <Box sx={rowhalf}>
+              <Box sx={col2}>
+                <label sx={txtlabel}>Zip Code</label>
                 <TextField disabled size="small" value={userinfo.zipCode} />
-              </div>
-              <div style={col}>
-                <label style={txtlabel}>Country</label>
+              </Box>
+              <Box sx={col2}>
+                <label sx={txtlabel}>Country</label>
                 <TextField disabled size="small" value={userinfo.country} />
-              </div>
-            </div>
-            <div style={rowfull}>
-              <div style={col}>
-                <label style={txtlabel}>Mobile No</label>
+              </Box>
+            </Box>
+            <Box sx={rowfull}>
+              <Box sx={col}>
+                <label sx={txtlabel}>Mobile No</label>
                 <TextField disabled size="small" value={userinfo.mobile} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={editbutton}>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={editbutton}>
           <Button
             variant="contained"
             onClick={() => {
@@ -105,23 +108,26 @@ export default function Profile() {
           >
             Edit
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Fragment>
   ) : (
     <Fragment>
       <DashboardDrawer />
-      <div
+      <Box
         className="profile-card"
-        style={{ marginLeft: "226px", padding: "20px" }}
+        sx={{
+          // marginLeft: "226px",
+        marginLeft: { xs: "55px", sm: "150px", md: "240px" },
+        padding: "20px" }}
       >
-        <div style={profilepic}></div>
-        <div className="gen-info" style={{ marginTop: "10px" }}>
+        <Box sx={profilepic}></Box>
+        <Box className="gen-info" sx={{ marginTop: "10px" }}>
           <h3>User Information</h3>
-          <div style={col}>
-            <div style={rowhalf}>
-              <div style={col}>
-                <label style={txtlabel}>First Name</label>
+          <Box sx={col}>
+            <Box sx={rowhalf}>
+              <Box sx={col2}>
+                <label sx={txtlabel}>First Name</label>
                 <TextField
                   size="small"
                   value={userinfo.firstName}
@@ -132,9 +138,9 @@ export default function Profile() {
                     });
                   }}
                 />
-              </div>
-              <div style={col}>
-                <label style={txtlabel}>Last Name</label>
+              </Box>
+              <Box sx={col2}>
+                <label sx={txtlabel}>Last Name</label>
                 <TextField size="small" value={userinfo.lastName}
                 onChange={() => {
                   dispatch({
@@ -142,22 +148,22 @@ export default function Profile() {
                     state:{lastName: event.target.value},
                   });
                 }}/>
-              </div>
-            </div>
-            <div style={rowfull}>
-              <div style={col}>
-                <label style={txtlabel}>Email</label>
+              </Box>
+            </Box>
+            <Box sx={rowfull}>
+              <Box sx={col}>
+                <label sx={txtlabel}>Email</label>
                 <TextField disabled size="small" value={userinfo.email} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="gen-info" style={{ marginTop: "40px" }}>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box className="gen-info" sx={{ marginTop: "40px" }}>
           <h3>Contact Information</h3>
-          <div style={col}>
-            <div style={rowfull}>
-              <div style={col}>
-                <label style={txtlabel}>Address</label>
+          <Box sx={col}>
+            <Box sx={rowfull}>
+              <Box sx={col}>
+                <label sx={txtlabel}>Address</label>
                 <TextField size="small" value={userinfo.address}
                 onChange={() => {
                   dispatch({
@@ -165,11 +171,11 @@ export default function Profile() {
                     state:{address: event.target.value},
                   });
                 }}/>
-              </div>
-            </div>
-            <div style={rowhalf}>
-              <div style={col}>
-                <label style={txtlabel}>City</label>
+              </Box>
+            </Box>
+            <Box sx={rowhalf}>
+              <Box sx={col2}>
+                <label sx={txtlabel}>City</label>
                 <TextField size="small" value={userinfo.city}
                 onChange={() => {
                   dispatch({
@@ -177,9 +183,9 @@ export default function Profile() {
                     state:{city: event.target.value},
                   });
                 }} />
-              </div>
-              <div style={col}>
-                <label style={txtlabel}>State</label>
+              </Box>
+              <Box sx={col2}>
+                <label sx={txtlabel}>State</label>
                 <TextField size="small" value={userinfo.state}
                 onChange={() => {
                   dispatch({
@@ -187,11 +193,11 @@ export default function Profile() {
                     state:{state: event.target.value},
                   });
                 }}/>
-              </div>
-            </div>
-            <div style={rowhalf}>
-              <div style={col}>
-                <label style={txtlabel}>Zip Code</label>
+              </Box>
+            </Box>
+            <Box sx={rowhalf}>
+              <Box sx={col2}>
+                <label sx={txtlabel}>Zip Code</label>
                 <TextField size="small" value={userinfo.zipCode}
                 onChange={() => {
                   dispatch({
@@ -199,21 +205,21 @@ export default function Profile() {
                     state:{zipCode: event.target.value},
                   });
                 }}/>
-              </div>
-              <div style={col}>
-                <label style={txtlabel}>Country</label>
-                <TextField size="small" value={userinfo.country}
+              </Box>
+              <Box sx={col2}>
+                <label sx={txtlabel}>Country</label>
+                <TextField size="small" width='30px' value={userinfo.country}
                 onChange={() => {
                   dispatch({
                     type: userinfoConstants.UPDATE_USERINFO,
                     state:{country: event.target.value},
                   });
                 }} />
-              </div>
-            </div>
-            <div style={rowfull}>
-              <div style={col}>
-                <label style={txtlabel}>Mobile No</label>
+              </Box>
+            </Box>
+            <Box sx={rowfull}>
+              <Box sx={col}>
+                <label sx={txtlabel}>Mobile No</label>
                 <TextField size="small" value={userinfo.mobile}
                 onChange={() => {
                   dispatch({
@@ -221,11 +227,11 @@ export default function Profile() {
                     state:{mobile: event.target.value},
                   });
                 }}/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={editbutton}>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={editbutton}>
           <Button
             marginLeft="10px"
             variant="contained"
@@ -247,8 +253,8 @@ export default function Profile() {
           >
             Cancel
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Fragment>
   );
 }
@@ -257,26 +263,32 @@ const col = {
   display: "flex",
   flexDirection: "column",
   marginLeft: "10px",
-  width: "auto",
+};
+const col2 = {
+  display: "flex",
+  flexDirection: "column",
+  marginLeft: "10px",
+  width: {xs: "40vw",md:"20vw"},
+
 };
 const rowfull = {
   marginTop: "10px",
   alignItems: "center",
-  width: "430px",
 };
 const rowhalf = {
   marginTop: "10px",
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  width: "430px",
+  justifyContent: 'space-between',
+  // width:'36vw'
 };
 const txtlabel = { fontSize: "14px" };
 const editbutton = {
   marginTop: "25px",
   display: "flex",
   flexDirection: "row-reverse",
-  width: "420px",
+  width:{ xs: "63vw", md: "35vw" },
   justifyContent: "space-between",
   marginLeft: "20px",
 };
