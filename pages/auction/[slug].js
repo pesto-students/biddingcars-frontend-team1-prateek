@@ -17,8 +17,8 @@ import AuctionHistory from '../../components/AuctionHistory';
 import moment from 'moment/moment';
 import { io } from "socket.io-client";
 
-const socket = io(`http://localhost:4000`);
-// const socket = io(`http://localhost:4000/.netlify/functions/socketIO`);
+// const socket = io(`http://localhost:4000`);
+const socket = io(`https://biddingcarsserver.netlify.app/`);
 
 const AuctionDetail = () => {
 
@@ -67,7 +67,8 @@ const AuctionDetail = () => {
         role: auth.role,
       },
       auth.accessToken))
-      resdata?.check? setOpen(true):toast(resdata?.message,{ type: 'warning' })
+      console.log(resdata)
+      resdata?.check? resdata.isVerified?setOpen(true):toast('submit your address and card details for verification',{type:'warning'}):toast(resdata?.message,{ type: 'warning' })
     }
   };
   const handleClose = () => {
