@@ -5,23 +5,42 @@ import { Button, TextField, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { getTimeline,getHistory } from '../../actions/timeline.action';
+import { getTimeline, getHistory } from '../../actions/timeline.action';
 import Image from 'next/image';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import { toast } from 'react-toastify';
-import { postBid,postBidCheck } from '../../actions/bidding.action';
+import { postBid, postBidCheck } from '../../actions/bidding.action';
 import { checkSignin } from '../../actions/auth.action';
 import AuctionHistory from '../../components/AuctionHistory';
 import moment from 'moment/moment';
-import { io } from "socket.io-client";
-
-// const socket = io(`http://localhost:4000`);
-const socket = io(`https://bidding-cars-socket.herokuapp.com/`);
+import { io } from 'socket.io-client';
 
 const AuctionDetail = () => {
+  const [close, setClose] = useState(false);
 
-useEffect(() => {
+  const [car, setCar] = useState(null);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const {
+    query: { slug },
+  } = router;
+  const timeline = useSelector((state) => state.timeline);
+  const auth = useSelector((state) => state.auth);
+  useEffect(() => {
+    dispatch(checkSignin());
+    dispatch(getTimeline());
+  }, []);
+
+  useEffect(() => {
+    setCar(timeline.timeline.filter((e) => e._id === slug)[0]);
+    console.log(car);
+  }, [slug, timeline]);
+  // const socket = io(`http://localhost:4000`);
+
+  const socket = io(`https://bidding-cars-socket.herokuapp.com/`);
+  useEffect(() => {
     socket.on('bid_update', async (data) => {
       console.log('update');
       console.log(data, car);
@@ -33,6 +52,7 @@ useEffect(() => {
     });
     socket.on('bid_close', (data) => {
       console.log(data);
+      setClose(true);
     });
 
     return () => {
@@ -41,23 +61,6 @@ useEffect(() => {
       socket.off('bid_close');
     };
   }, [socket]);
-
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const {
-    query: { slug },
-  } = router;
-  const timeline = useSelector((state) => state.timeline);
-  const auth = useSelector((state) => state.auth);
-  const [car, setCar] = useState(null);
-  useEffect(() => {
-    dispatch(checkSignin());
-    dispatch(getTimeline());
-  }, []);
-
-  useEffect(() => {
-    setCar(timeline.timeline.filter((e) => e._id === slug)[0]);
-  }, [slug, timeline]);
 
   const toIndianCurrency = (num) => {
     const curr = num?.toLocaleString('en-IN', {
@@ -71,23 +74,31 @@ useEffect(() => {
   const [newbid, setNewbid] = useState();
 
   const handleClickOpen = async () => {
-    if(!auth.authenticate){
+    if (!auth.authenticate) {
       document.getElementById('signin-btn').click();
-    }else{
-      const resdata= await dispatch(postBidCheck( {
-        car,
-        email: auth.userId,
-        role: auth.role,
-      },
-      auth.accessToken))
-      console.log(resdata)
-      resdata?.check? resdata.isVerified?setOpen(true):toast('submit your address and card details for verification',{type:'warning'}):toast(resdata?.message,{ type: 'warning' })
+    } else {
+      const resdata = await dispatch(
+        postBidCheck(
+          {
+            car,
+            email: auth.userId,
+            role: auth.role,
+          },
+          auth.accessToken,
+        ),
+      );
+      console.log(resdata);
+      resdata?.check
+        ? resdata.isVerified
+          ? setOpen(true)
+          : toast('submit your address and card details for verification', { type: 'warning' })
+        : toast(resdata?.message, { type: 'warning' });
     }
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const placebid=()=>{
+  const placebid = () => {
     dispatch(
       postBid(
         {
@@ -99,7 +110,7 @@ useEffect(() => {
         auth.accessToken,
       ),
     );
-  }
+  };
 
   const carSnippets = {
     width: {
@@ -231,7 +242,7 @@ useEffect(() => {
           }}
         >
           <Typography variant="h4">
-            {car?.modelYear} {car?.carCompany} {car?.modelName}
+            {car?.modelYear} {car?.carCompany} {car?.modelName} {close ? '(Auction ended)' : null}
           </Typography>
           <Box sx={{ mt: { xs: '2vh', sm: '12vh', md: '6vh' } }}>
             <Carousel>
@@ -279,7 +290,7 @@ useEffect(() => {
           <Paper variant="outlined" sx={carSnippets}>
             <Paper variant="outlined" sx={innerSnippet}>
               <Box sx={innerSnippetUpper}>Total Bids</Box>
-              <Box sx={{ padding: '5px', textAlign: 'right' }}>{(car?.numberOfBids)?(car?.numberOfBids):0}</Box>
+              <Box sx={{ padding: '5px', textAlign: 'right' }}>{car?.numberOfBids ? car?.numberOfBids : 0}</Box>
             </Paper>
           </Paper>
           <Paper variant="outlined" sx={carSnippets}>
@@ -295,7 +306,6 @@ useEffect(() => {
             >
               Place Bid
             </Button>
-
           </Paper>
           <Dialog open={open} onClose={handleClose}>
             {page()}
