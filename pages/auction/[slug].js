@@ -41,6 +41,9 @@ const AuctionDetail = () => {
 
   const socket = io(`https://bidding-cars-socket.herokuapp.com/`);
   useEffect(() => {
+    socket.on('connect', () => {
+      console.log('connected')
+    })
     socket.on('bid_update', async (data) => {
       console.log('update');
       console.log(data, car);
