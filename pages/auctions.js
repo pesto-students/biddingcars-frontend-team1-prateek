@@ -65,7 +65,7 @@ export default function Auctions() {
                   borderRadius: '10px',
                   padding: '5px',
                   marginBottom: '20px',
-                  mr: '12px',
+                  mr: '1.2vw',
                   cursor: 'pointer',
                 }}
                 variant="outlined"
