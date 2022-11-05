@@ -23,8 +23,14 @@ const AuctionDetail = () => {
 
   useEffect(() => {
     socket.on("bid_update", (data) => {
+      console.log("update");
       console.log(data);
-      setCar(data);
+      if (car._id === data._id) {
+        setCar(data);
+      }
+    });
+    socket.on("bid_close", (data) => {
+      console.log(data);
     });
   }, [socket]);
 
