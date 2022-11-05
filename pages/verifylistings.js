@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { verifyCar,rejectCar } from "../actions/list.action";
  import { getUserinfo } from "../actions/userinfo.action";
+ import moment from 'moment/moment';
 export default function Verifylistings() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
@@ -149,7 +150,7 @@ export default function Verifylistings() {
                   >
                     <div>Current Bid Price: ₹{car.currentBid}</div>
 
-                    <div>🕧 {car.createdAt} &nbsp;</div>
+                    <div>🕧 {moment(car?.endTime).fromNow()} &nbsp;</div>
                     <div>Total Bids: {car.numberOfBids}</div>
                     <div>Base Price: ₹{car.basePrice}</div>
                   </Box>

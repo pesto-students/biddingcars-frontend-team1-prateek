@@ -51,7 +51,7 @@ export const addCardInfo = (form,token,userinfo) => async (dispatch) => {
   try {
 
     dispatch({ type: userinfoConstants.POST_USERINFO_REQUEST });
-    const res = await axios.post(`/cards/add`,form
+    const res = await axios.post(`/users/update`,form
     ,{ headers: { Authorization: "Bearer " + token ,user:JSON.stringify(userinfo)}}
     );
     if (res.status === 200) {

@@ -14,6 +14,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { useRouter } from "next/router";
+import moment from 'moment/moment';
 export default function Verifylistings() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
@@ -163,7 +164,7 @@ export default function Verifylistings() {
                   >
                     <div>Current Bid Price: ₹{car.currentBid}</div>
 
-                    <div>🕧 {car.createdAt} &nbsp;</div>
+                    <div>🕧 {moment(car?.endTime).fromNow()} &nbsp;</div>
                     <div>Total Bids: {car.numberOfBids}</div>
                     <div>Base Price: ₹{car.basePrice}</div>
                   </Box>

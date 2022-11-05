@@ -86,6 +86,17 @@ export default function Verifylistings() {
           <DialogContentText>Email : {user?.email}</DialogContentText>
           <DialogContentText>Address : {`${user?user.address:''} ${user?user.city:''} ${user?user.state:''} ${user?user.country:'d'} Zip : ${user?user.zipCode:''}`}</DialogContentText>
         </DialogContent>
+        <DialogTitle>Bank Details</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Customer Name : {user?.customerName}</DialogContentText>
+          <DialogContentText>Account Number : {user?.accountNumber}</DialogContentText>
+          <DialogContentText>Aadhar : {user?.aadharNumber}</DialogContentText>
+          <DialogContentText>PAN : {user?.panNumber}</DialogContentText>
+          <DialogContentText>Account Type : {user?.accountType}</DialogContentText>
+          <DialogContentText>Caredit Score : {user?.creditScore}</DialogContentText>
+          <DialogContentText>Annual Income : {user?.annualAvgIncome}</DialogContentText>
+          <DialogContentText>Income Source : {user?.incomeSource}</DialogContentText>
+        </DialogContent>
         <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
           <Button onClick={() => {dispatch(verifyUser(user._id,auth.accessToken,userinfo))

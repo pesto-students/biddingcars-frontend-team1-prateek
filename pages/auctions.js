@@ -11,7 +11,7 @@ import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
 import { useEffect, useState } from 'react';
 import { getTimeline } from '../actions/timeline.action';
 import { useRouter } from 'next/router';
-
+import moment from 'moment/moment';
 export default function Auctions() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
@@ -100,7 +100,7 @@ export default function Auctions() {
                       elevation={0}
                       variant="outlined"
                     >
-                      🕧 10 days &nbsp; {toIndianCurrency(car.currentBid)}
+                      🕧 {moment(car?.endTime).fromNow()} &nbsp; {toIndianCurrency(car.currentBid)}
                     </Paper>
                   </Box>
                   <Box>

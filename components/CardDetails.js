@@ -12,6 +12,7 @@ const CardDetails = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
+    email:auth.userId,
     accounttype: '',
     namec: '',
     accountnumber: 0,
