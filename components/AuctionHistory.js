@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment/moment';
 import { AiOutlineDown, AiOutlineUp, AiOutlineMail } from 'react-icons/ai';
 import { BiUserCircle } from 'react-icons/bi';
-import { getHistory } from '../actions/timeline.action';
+import { getHistory,getTimeline } from '../actions/timeline.action';
 
 const AuctionHistory = ({ id }) => {
   const timeline = useSelector((state) => state.timeline);
@@ -22,6 +22,9 @@ const AuctionHistory = ({ id }) => {
   };
 
   useEffect(() => {
+    dispatch(getTimeline());
+  }, []);
+  useEffect(() => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   }, [timeline]);
 
@@ -35,6 +38,7 @@ const AuctionHistory = ({ id }) => {
           m: '15px',
         }}
         onClick={() => {
+          dispatch(getTimeline());
           dispatch(getHistory(id));
           setOpen(!open);
         }}
