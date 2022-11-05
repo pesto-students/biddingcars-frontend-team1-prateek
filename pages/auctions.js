@@ -61,11 +61,11 @@ export default function Auctions() {
                 }}
                 elevation={0}
                 sx={{
-                  width: { xs: '90vw', sm: '43vw', md: '23vw' },
+                  width: { xs: '90vw', sm: '43vw', md: '22vw' },
                   borderRadius: '10px',
                   padding: '5px',
                   marginBottom: '20px',
-                  mr: '1.2vw',
+                  mr: '1.3vw',
                   cursor: 'pointer',
                 }}
                 variant="outlined"
