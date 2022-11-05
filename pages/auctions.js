@@ -58,7 +58,7 @@ export default function Auctions() {
                 onClick={() => {
                   router.push(`/auction/${car._id}`);
                 }}
-                elevation={5}
+                elevation={0}
                 sx={{
                   width: { xs: '90vw', sm: '43vw', md: '23vw' },
                   borderRadius: '10px',
@@ -134,7 +134,7 @@ export default function Auctions() {
                         fontSize: '15px',
                       }}
                     >
-                      {reduce(car.condition)}
+                     Description:  {reduce(car.condition)}
                     </Box>
                   </Box>
                 </Box>

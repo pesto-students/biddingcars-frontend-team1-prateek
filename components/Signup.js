@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { signup } from "../actions/auth.action";
 import { TextField, Button } from "@mui/material";
-import AdminCheckbox from "./AdminCheckbox";
-import Checkbox from '@mui/material/Checkbox';
-// import RightDrawer from './RightDrawer';
 
 const Signup = ({ login }) => {
   const [email, setEmail] = useState("");
@@ -19,7 +16,7 @@ const Signup = ({ login }) => {
 
   const handleSubmit = () => {
     if (password === confirmpassword) {
-      dispatch(signup({ email, password, fname, lname ,role}));
+      dispatch(signup({ email, password, fname, lname, role }));
     } else {
       setAlert("passwords doest not match");
     }
@@ -80,7 +77,7 @@ const Signup = ({ login }) => {
             </div>
             <div>
               <TextField
-              type="password"
+                type="password"
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
@@ -90,7 +87,7 @@ const Signup = ({ login }) => {
             </div>
             <div>
               <TextField
-              type="password"
+                type="password"
                 id="outlined-basic"
                 label="Confirm Password"
                 variant="outlined"
@@ -98,20 +95,12 @@ const Signup = ({ login }) => {
                 onChange={(e) => setConfirmpassword(e.target.value)}
               />
             </div>
-            {/* <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
-        if(e.target.checked){
-          setRole('admin')
-        }
-        else{
-          setRole('user')
-        }
-        }} />}/> */}
+
             <div>{alert}</div>
             <Button type="submit" variant="outlined">
               Signup
             </Button>
             {login}
-            {/* <a href="#">Forgot password?</a> */}
           </div>
         </div>
       </form>

@@ -86,7 +86,7 @@ export default function Verifylistings() {
                   onClick={() => {
                     router.push(`/auction/${car._id}`);
                   }}
-                  elevation={5}
+                  elevation={0}
                   sx={{
                     width: { xs: "76vw", md: "20vw" },
                     borderRadius: "10px",
@@ -179,7 +179,7 @@ export default function Verifylistings() {
                     pl: "10px",
                     }}
                   >
-                    <div>{reduce(car.condition)}</div>
+                    <div>Description: {reduce(car.condition)}</div>
                   </Box>
 
               </Box>

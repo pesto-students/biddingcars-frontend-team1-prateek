@@ -1,6 +1,7 @@
 import { userinfoConstants } from '../actions/constants';
 
 const initState = {
+  waiting: false,
   firstName: null,
   lastName: null,
   email: null,

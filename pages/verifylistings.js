@@ -10,6 +10,7 @@ import { getTimeline } from "../actions/timeline.action";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { verifyCar,rejectCar } from "../actions/list.action";
+ import { getUserinfo } from "../actions/userinfo.action";
 export default function Verifylistings() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
@@ -24,6 +25,7 @@ export default function Verifylistings() {
   };
   useEffect(() => {
     dispatch(checkSignin());
+    dispatch(getUserinfo(auth.userId,auth.accessToken));
     dispatch(getTimeline());
   }, []);
 
@@ -40,7 +42,7 @@ export default function Verifylistings() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          // justifyContent: "space-between",
           flexWrap: "wrap",
           alignItems: "center",
         }}
@@ -48,19 +50,20 @@ export default function Verifylistings() {
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
-          timeline.timeline.filter((data)=>{return data.status=='pending for approval'}).map((car, index) => (
-            <div
+          timeline.timeline.filter((data)=>{return data.status=='pending'}).map((car, index) => (
+            <Box
               key={index}
-              style={{
+              sx={{
                 // height: "175px",
-                // width: "1050px",
-                width: { xs: "60vw", sm: "80vw", md: "100vw" },
-                height: { xs: "60vw", sm: "50vw", md: "40vw" },
+                height: "auto",
+                // height: {xs:"60vh",md:"27vh"},
+                width: "80vw",
+                // width: { xs: "60vw", sm: "150px", md: "1050px" },
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: {xs:"column",md:"row"},
                 border: "solid #90caf9 3px",
                 borderRadius: "10px",
-                marginLeft: "240px",
+                marginLeft: { xs: "55px", sm: "150px", md: "240px" },
                 marginTop: "15px",
               }}
             >
@@ -69,12 +72,14 @@ export default function Verifylistings() {
                   onClick={() => {
                     router.push(`/auction/${car._id}`);
                   }}
-                  elevation={5}
+                  elevation={0}
                   sx={{
-                    width: { xs: "60vw", sm: "34vw", md: "20vw" },
+                    width: { xs: "76vw", md: "20vw" },
                     borderRadius: "10px",
                     padding: "5px",
-                    marginBottom: "20px",
+                    // position: 'absolute',npm run dev
+                    position: 'relative',
+                    // marginBottom: "20px",
                     cursor: "pointer",
                   }}
                   variant="outlined"
@@ -106,9 +111,11 @@ export default function Verifylistings() {
                     justifyContent: "left",
                     alignItems: "center",
                     height: "35px",
+                    width:'30vw',
                     background: "primary",
                     pt: "20px",
                     px: "10px",
+                    pb:"20px",
                     borderRadius: "0px 10px 0px 0px",
                     color: "text.primary",
                   }}
@@ -125,41 +132,69 @@ export default function Verifylistings() {
                     height: "35px",
                     padding: "10px",
                     color: "text.secondary",
-                    py: "30px",
+                    py: "50px",
                     px: "10px",
                     fontSize: "15px",
+                    flexWrap:'nowrap',
                   }}
                 >
-                  <div
-                    style={{
-                      width: "600px",
-                      display: "flex",
+                  <Box
+                    sx={{
+                      width: "50vw",
+                      display: "inline-flex",
+                      flexDirection: {xs:'column',sm:'column',md:'row'},
+                      flexWrap:'wrap',
                       justifyContent: "space-between",
                     }}
                   >
                     <div>Current Bid Price: ₹{car.currentBid}</div>
 
-                    <div>🕧 10 days &nbsp;</div>
-                    <div>Total Bids: {89}</div>
+                    <div>🕧 {car.createdAt} &nbsp;</div>
+                    <div>Total Bids: {car.numberOfBids}</div>
                     <div>Base Price: ₹{car.basePrice}</div>
-                  </div>
+                  </Box>
                 </Box>
-                {reduce(car.condition)}
+                <Box
+                    sx={{
+                      width: "50vw",
+                      display: "inline-flex",
+                      flexDirection: {xs:'column',sm:'column',md:'row'},
+                      flexWrap:'wrap',
+                      justifyContent: "space-between",
+                      pt: "10px",
+                    pl: "10px",
+                    }}
+                  >
+                   <div>Description: {reduce(car.condition)}</div>
+                  </Box>
+
               </Box>
-              <div
-                style={{
-                  height: "160px",
+              <Box
+                sx={{
+                  height: {xs:"20px",md:"160px"},
                   margin: "5px",
-                  width: "80px",
+                  width: "100px",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-evenly",
+                  px: "10px",
+                    pl: "10px",
                 }}
               >
-                <button onClick={()=>{dispatch(verifyCar(car._id,'approved',auth.accessToken,userinfo))}}>Verify</button>
-                <button onClick={()=>{dispatch(rejectCar(car._id,'rejected',auth.accessToken,userinfo))}}>Reject</button>
-              </div>
-            </div>
+                <Box  sx={{
+
+                display: "flex",
+                flexDirection: {xs:'row',sm:'column',md:'column'},
+                borderRadius: "2px",
+                width:{xs:'130px',sm:'30px',md:'30px'},
+                height:'70px',
+                color:'black',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}><button onClick={()=>{dispatch(verifyCar(car._id,'approved',auth.accessToken,userinfo))}}>Verify</button>
+             <button onClick={()=>{dispatch(rejectCar(car._id,'rejected',auth.accessToken,userinfo))}}>Reject</button></Box>
+              </Box>
+            </Box>
           ))
         )}
       </Box>

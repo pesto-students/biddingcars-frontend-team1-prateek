@@ -7,7 +7,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { getTimeline,getHistory } from '../../actions/timeline.action';
 import Image from 'next/image';
-import BidDialog from '../../components/BidDialog';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import { toast } from 'react-toastify';
@@ -18,7 +17,7 @@ import moment from 'moment/moment';
 import { io } from "socket.io-client";
 
 // const socket = io(`http://localhost:4000`);
-const socket = io(`https://biddingcarsserver.netlify.app/`);
+const socket = io(`https://bidding-cars-socket.herokuapp.com/`);
 
 const AuctionDetail = () => {
 

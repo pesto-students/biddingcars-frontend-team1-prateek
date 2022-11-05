@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button,TextField,Box , Paper, Typography } from '@mui/material';
+import { Button,TextField,Box , MenuItem,Select } from '@mui/material';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
-import Image from 'next/image';
-import {Dialog ,DialogActions ,DialogContent ,DialogContentText ,DialogTitle} from '@mui/material';
+import { toast } from "react-toastify";
+import {InputLabel ,DialogActions ,DialogContent ,DialogContentText ,DialogTitle} from '@mui/material';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import { addCardInfo } from '../actions/userinfo.action';
 const CardDetails = () => {
@@ -12,85 +12,87 @@ const CardDetails = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
-    cardnumber: 0,
-    name: '',
-    expiry: '',
-    cvv: 0,
-    cardtype: '',
+    accounttype: '',
+    namec: '',
+    accountnumber: 0,
+    aadhar:0,
+    pan: '',
+    creditscore:0,
+    annualavgincome:0,
+    incomesource:'',
+
   });
-  const handleClickOpen = () => {
-    auth.authenticate?setOpen(true):document.getElementById('signin-btn').click()
+
+  const formatAccountNumber = (value) => {
+    return value.slice(0, 14);
   };
-  const clearNumber = (value = '') => {
-    return value.replace(/\D+/g, '');
-  };
-  const formatCreditCardNumber = (value) => {
+  const formatAadharNumber = (value) => {
     return value.slice(0, 12);
   };
-  const formatCVV = (value, prevValue, allValues = {}) => {
-    const clearValue = clearNumber(value);
-    let maxLength = 4;
-
-    if (allValues.number) {
-      const issuer = Payment.fns.cardType(allValues.number);
-      maxLength = issuer === 'amex' ? 4 : 3;
-    }
-
-    return clearValue.slice(0, maxLength);
+  const formatPanNumber = (value) => {
+    return value.toUpperCase().slice(0, 10);
+  };
+  const formatCreditScore= (value) => {
+    return value.slice(0, 3);
   };
 
-  const formatExpirationDate = (value) => {
-    const clearValue = clearNumber(value);
-
-    if (clearValue.length >= 3) {
-      return `${clearValue.slice(0, 2)}/${clearValue.slice(2, 4)}`;
-    }
-
-    return clearValue;
-  };
   const handleSubmit = () => {
-    dispatch(addCardInfo(state,auth.accessToken,userinfo))
+    if(state.accounttype &&
+      state.namec &&
+      state.accountnumber&&
+      state.aadhar&&
+      state.pan&&
+      state.creditscore&&
+      state.annualavgincome&&
+      state.incomesource
+    ) {
+      dispatch(addCardInfo(state,auth.accessToken,userinfo))
+    } else {
+      toast('Please fill all the fields!', { type: 'warning' });
+    }
   };
   const handleInputChange = ({ target }) => {
-    if (target.name === 'cardnumber') {
-      target.value = formatCreditCardNumber(target.value);
-    } else if (target.name === 'expiry') {
-      target.value = formatExpirationDate(target.value);
-    } else if (target.name === 'cvv') {
-      target.value = formatCVV(target.value);
-    } else if (target.name === 'cardtype') {
+    if (target.name === 'accountnumber') {
+      target.value = formatAccountNumber(target.value);
+    }else if (target.name === 'aadhar') {
+      target.value = formatAadharNumber(target.value);
+    }else if (target.name === 'pan') {
+      target.value = formatPanNumber(target.value);
+    } else if (target.name === 'creditscore') {
+      target.value = formatCreditScore(target.value);
+    } else if (target.name === 'accounttype') {
       target.value = target.value;
     }
     setState({ ...state, [target.name]: target.value });
+    console.log(state)
   };
   return (
     <Box
     className="profile-card"
     sx={{
       // marginLeft: "226px",
-      marginLeft: { xs: "55px", sm: "150px", md: "240px" },
-      width: { xs: "80vw", sm: "50vw", md: "40vw" },
+      marginLeft: { xs: "30px", sm: "150px", md: "240px" },
+      width: { xs: "95vw", sm: "50vw", md: "40vw" },
       padding: "20px"
     }}
   >
 
-    <DialogContent>
       <br />
       <FormControl>
-        <FormLabel id="">Card Type</FormLabel>
+        <FormLabel id="">Account Type</FormLabel>
         <RadioGroup row name="row-card-group">
           <FormControlLabel
-            value="debitCard"
-            name="cardtype"
+            value="Savings"
+            name="accounttype"
             control={<Radio />}
-            label="Debit Card"
+            label="Savings"
             onChange={handleInputChange}
           />
           <FormControlLabel
-            name="cardtype"
-            value="creditCard"
+            name="accounttype"
+            value="Current"
             control={<Radio />}
-            label="Credit Card"
+            label="Current"
             onChange={handleInputChange}
           />
         </RadioGroup>
@@ -99,8 +101,8 @@ const CardDetails = () => {
       sx={{ mt: '10px', mr: '20px' }}
         margin="dense"
         id="outlined-basic"
-        name="name"
-        label="Name on Card"
+        name="namec"
+        label="Account holder name"
         type="text"
         fullWidth
         size="small"
@@ -109,35 +111,76 @@ const CardDetails = () => {
       <TextField
         sx={{ mt: '10px', mr: '20px' }}
         id="outlined-basic"
-        label="Card Number"
-        name="cardnumber"
+        label="Account Number"
+        name="accountnumber"
         pattern="[\d| ]{16,22}"
         type="number"
         fullWidth
         size="small"
         onChange={handleInputChange}
       />
-      <div>
-        <TextField
-          sx={{ width: '30%', mt: '10px', mr: '20px' }}
+      <TextField
+      sx={{ mt: '10px', mr: '7px', width: { xs: "48%", sm: "48%", md: "48%" } }}
+        margin="dense"
+        id="outlined-basic"
+        name="aadhar"
+        label="Aadhar Number"
+        type="number"
+        size="small"
+        onChange={handleInputChange}
+      />
+      <TextField
+      sx={{ mt: '10px', ml: '7px' , width: { xs: "48%", sm: "46%", md: "49%" }}}
+        margin="dense"
+        id="outlined-basic"
+        name="pan"
+        label="PAN Number"
+        type="text"
+        size="small"
+        onChange={handleInputChange}
+      />
+      <TextField
+      sx={{ mt: '10px', mr: '7px', width: { xs: "48%", sm: "48%", md: "48%" } }}
+        margin="dense"
+        id="outlined-basic"
+        name="creditscore"
+        label="Credit Score"
+        type="number"
+        size="small"
+        onChange={handleInputChange}
+      />
+      <TextField
+      sx={{ mt: '10px', ml: '7px' , width: { xs: "48%", sm: "46%", md: "49%" }}}
+        margin="dense"
+        id="outlined-basic"
+        name="annualavgincome"
+        label="Annual Avg Income in LPA"
+        type="number"
+        size="small"
+        onChange={handleInputChange}
+      />
+      <FormControl fullWidth sx={{ mt: '10px', mr: '20px' }}
+        margin="dense"
+        id="outlined-basic"
+        name="incomesource"
+        type="text"
+        size="small"
+        onChange={handleInputChange}>
+        <InputLabel id="outlined-basic">Income Source</InputLabel>
+        <Select
           id="outlined-basic"
-          label="Expiry Date"
-          name="expiry"
-          pattern="\d\d/\d\d"
+          label="Income Source"
           onChange={handleInputChange}
-          size="small"
-        />
-        <TextField
-          sx={{ width: '30%', mt: '10px', mr: '20px' }}
-          id="outlined-basic"
-          label="CVV"
-          name="cvv"
-          type="password"
-          size="small"
-          onChange={handleInputChange}
-        />
-      </div>
-    </DialogContent>
+          name="incomesource"
+          value={state.incomesource}
+        >
+          <MenuItem value={'Salary'}>Salary</MenuItem>
+          <MenuItem value={'House Property'}>House Property</MenuItem>
+          <MenuItem value={'Business/Profession'}>Business/Profession</MenuItem>
+          <MenuItem value={'Pension'}>Pension</MenuItem>
+          <MenuItem value={'Agriculture'}>Agriculture</MenuItem>
+        </Select>
+      </FormControl>
     <DialogActions>
       <Button
       variant="contained"

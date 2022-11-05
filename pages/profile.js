@@ -32,7 +32,7 @@ export default function Profile() {
   const [page, setPage] = useState("personaldetails")
   const pages = auth.role === "admin"
   ?[{name:'Personal Details',link:'personaldetails'}]:[{name:'Personal Details',link:'personaldetails'},
-  {name:'Card Details',link:'carddetails'}];
+  {name:'Bank Details',link:'carddetails'}];
   const handleEdit = () => {
     dispatch(postUserinfo(userinfo, auth.accessToken, userinfo))
   };
@@ -125,7 +125,7 @@ export default function Profile() {
         <Box sx={rowhalf}>
           <Box sx={col2}>
             <label sx={txtlabel}>Zip Code</label>
-            <TextField disabled={disabledForm} size="small" value={userinfo.zipCode}
+            <TextField disabled={disabledForm}  type="number" size="small" value={userinfo.zipCode}
               onChange={() => {
                 dispatch({
                   type: userinfoConstants.UPDATE_USERINFO,
@@ -147,7 +147,7 @@ export default function Profile() {
         <Box sx={rowfull}>
           <Box sx={col}>
             <label sx={txtlabel}>Mobile No</label>
-            <TextField disabled={disabledForm} size="small" value={userinfo.mobile}
+            <TextField disabled={disabledForm} type="number" size="small" value={userinfo.mobile}
               onChange={() => {
                 dispatch({
                   type: userinfoConstants.UPDATE_USERINFO,

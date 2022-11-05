@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { signup, signin, googleSignIn } from "../actions/auth.action";
+import {  signin, googleSignIn } from "../actions/auth.action";
 import { TextField, Button } from "@mui/material";
-import AdminCheckbox from "./AdminCheckbox";
-import Checkbox from '@mui/material/Checkbox';
-// import RightDrawer from './RightDrawer';
 
 const Signin = ({ createAccount }) => {
   const [email, setEmail] = useState("");
@@ -63,15 +60,6 @@ const Signin = ({ createAccount }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {/* <AdminCheckbox isadmin={<Checkbox onChange={(e) => {
-              if(e.target.checked){
-                setRole('admin')
-              }
-              else{
-                setRole('user')
-              }
-
-        }} />}/> */}
             <Button
               type="submit"
               variant="outlined"

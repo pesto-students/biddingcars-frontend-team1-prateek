@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ListIcon from "@mui/icons-material/List";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 const drawerWidth = 'auto';
 
 export default function DashboardDrawer(props) {
@@ -25,6 +26,11 @@ export default function DashboardDrawer(props) {
           { name: "Profile", link: "/profile", icon: AccountCircleIcon },
           // { name: "My Listings", link: "/mylistings", icon: ListIcon },
           { name: "Settings", link: "/settings", icon: SettingsIcon },
+          {
+            name: "Verify Users",
+            link: "/verifyusers",
+            icon: HowToRegIcon,
+          },
           {
             name: "Verify Listings",
             link: "/verifylistings",

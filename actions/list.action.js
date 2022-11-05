@@ -22,9 +22,9 @@ export const listCar = (form,token,userinfo) => async (dispatch) => {
   };
 
 
-  export const verifyCar = (id,status,token,userinfo) => async (dispatch) => {
+  export const verifyCar = (id,token,userinfo) => async (dispatch) => {
     try {
-      const res = await axios.post(`/cars/verify/${id}`,{status:status}
+      const res = await axios.post(`/cars/verify/${id}`
       ,{ headers: { Authorization: "Bearer " + token ,user:JSON.stringify(userinfo)}});
       if (res.status === 200) {
         toast('Car approved successfully !', { type: 'success' })
@@ -36,9 +36,9 @@ export const listCar = (form,token,userinfo) => async (dispatch) => {
     }
   };
 
-  export const rejectCar = (id,status,token,userinfo) => async (dispatch) => {
+  export const rejectCar = (id,token,userinfo) => async (dispatch) => {
     try {
-      const res = await axios.post(`/cars/reject/${id}`,{status:status}
+      const res = await axios.post(`/cars/reject/${id}`
       ,{ headers: { Authorization: "Bearer " + token ,user:JSON.stringify(userinfo)}});
       if (res.status === 200) {
         toast('Car rejected successfully !', { type: 'success' })

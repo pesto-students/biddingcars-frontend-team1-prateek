@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 export const getUserinfo = (email, token) => async (dispatch) => {
   try {
     dispatch({ type: userinfoConstants.GET_USERINFO_REQUEST });
-    // const res = await axios.get(`/users/${email}`);
     const res = await axios.get(`/users/${email}`
     , { headers: { Authorization: "Bearer " + token }
     }
@@ -60,13 +59,13 @@ export const addCardInfo = (form,token,userinfo) => async (dispatch) => {
         type: userinfoConstants.POST_USERINFO_SUCCESS,
         payload: res.data,
       });
-      toast("Card Added Successfully !", { type: "success" });
+      toast("Details Added Successfully !", { type: "success" });
     } else {
       dispatch({ type: userinfoConstants.POST_USERINFO_FAILURE });
-      toast("Error Adding Card", { type: "error" });
+      toast("Error Adding Details", { type: "error" });
     }
   } catch (err) {
     dispatch({ type: userinfoConstants.POST_USERINFO_FAILURE });
-    toast("Error Adding Card", { type: "error" });
+    toast("Error Adding Details", { type: "error" });
   }
 };
