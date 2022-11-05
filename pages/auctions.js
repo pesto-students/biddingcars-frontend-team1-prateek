@@ -11,6 +11,7 @@ import firebase, { tokenSignin, checkSignin } from '../actions/auth.action';
 import { useEffect, useState } from 'react';
 import { getTimeline } from '../actions/timeline.action';
 import { useRouter } from 'next/router';
+import moment from 'moment/moment';
 
 export default function Auctions() {
   const auth = useSelector((state) => state.auth);
@@ -48,7 +49,7 @@ export default function Auctions() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'left', flexWrap: 'wrap', alignItems: 'center' }}>
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
@@ -64,6 +65,7 @@ export default function Auctions() {
                   borderRadius: '10px',
                   padding: '5px',
                   marginBottom: '20px',
+                  mr: '12px',
                   cursor: 'pointer',
                 }}
                 variant="outlined"
@@ -100,7 +102,7 @@ export default function Auctions() {
                       elevation={0}
                       variant="outlined"
                     >
-                      🕧 10 days &nbsp; {toIndianCurrency(car.currentBid)}
+                      🕧 {moment(car?.endTime).fromNow()} &nbsp; {toIndianCurrency(car.currentBid)}
                     </Paper>
                   </Box>
                   <Box>
