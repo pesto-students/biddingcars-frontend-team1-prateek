@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { getTimeline } from '../actions/timeline.action';
 import { useRouter } from 'next/router';
 import moment from 'moment/moment';
+
 export default function Auctions() {
   const auth = useSelector((state) => state.auth);
   const timeline = useSelector((state) => state.timeline);
@@ -48,7 +49,7 @@ export default function Auctions() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'left', flexWrap: 'wrap', alignItems: 'center' }}>
         {timeline.waiting ? (
           <CircularProgress />
         ) : (
@@ -64,6 +65,7 @@ export default function Auctions() {
                   borderRadius: '10px',
                   padding: '5px',
                   marginBottom: '20px',
+                  mr: '1.2vw',
                   cursor: 'pointer',
                 }}
                 variant="outlined"
