@@ -15,8 +15,8 @@ const moduleExports = withPWA({
  messagingSenderId: '578243658376',
  appId: '1:578243658376:web:6d384f19b163a47b60553d',
  measurementId: 'G-G1PK01GE79',
- addUserEndpoint:'http://localhost:5000/.netlify/functions/server'
-//  addUserEndpoint:'https://biddingcarsserver.netlify.app/.netlify/functions/server'
+//  addUserEndpoint:'http://localhost:5000/.netlify/functions/server'
+ addUserEndpoint:'https://biddingcarsserver.netlify.app/.netlify/functions/server'
  },
   sentry: {
     hideSourceMaps: true,

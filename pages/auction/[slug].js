@@ -21,11 +21,25 @@ const socket = io(`https://bidding-cars-socket.herokuapp.com/`);
 
 const AuctionDetail = () => {
 
-  useEffect(() => {
-    socket.on("bid_update", (data) => {
-      console.log(data);
-      setCar(data);
+useEffect(() => {
+    socket.on('bid_update', async (data) => {
+      console.log('update');
+      console.log(data, car);
+      setCar(timeline.timeline.filter((e) => e._id === slug)[0]);
+      if (car)
+        if (car._id === data._id) {
+          setCar(data);
+        }
     });
+    socket.on('bid_close', (data) => {
+      console.log(data);
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('bid_update');
+      socket.off('bid_close');
+    };
   }, [socket]);
 
   const router = useRouter();

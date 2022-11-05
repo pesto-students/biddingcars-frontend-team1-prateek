@@ -30,7 +30,9 @@ export default function Verifylistings() {
     dispatch(getUserinfo(auth.userId, auth.accessToken));
     dispatch(getUsers(auth.accessToken));
   },[]);
-
+  useEffect(() => {
+    dispatch(getUsers(auth.accessToken));
+  },[open]);
 
   const handleClose = () => {
     setOpen(false);
@@ -85,8 +87,9 @@ export default function Verifylistings() {
           <DialogContentText>Address : {`${user?user.address:''} ${user?user.city:''} ${user?user.state:''} ${user?user.country:'d'} Zip : ${user?user.zipCode:''}`}</DialogContentText>
         </DialogContent>
         <DialogActions>
-        <Button onClick={() => handleClose}>Cancel</Button>
-          <Button onClick={() => {dispatch(verifyUser(user._id,auth.accessToken,userinfo))}}>Verify</Button>
+        <Button onClick={() => handleClose()}>Cancel</Button>
+          <Button onClick={() => {dispatch(verifyUser(user._id,auth.accessToken,userinfo))
+          handleClose()}}>Verify</Button>
 
         </DialogActions>
       </Dialog>
