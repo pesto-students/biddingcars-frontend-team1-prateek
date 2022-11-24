@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 import { getUsers,verifyUser } from "../actions/users.action";
 import { useRouter } from "next/router";
 import { getUserinfo } from "../actions/userinfo.action";
+import {List,ListItem,ListItemButton,ListItemText} from '@mui/material';
 import {
   Dialog,
   DialogActions,
@@ -53,18 +54,34 @@ export default function Verifylistings() {
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          alignItems: "center",
+          alignItems: "flex-start",
+          flexDirection: 'column',
         }}
       >
+        <Box sx={{ width: "170px",marginLeft: { xs: "40px", sm: "150px", md: "230px" },marginTop:{ xs: "0px", sm: "0px", md: "0px" }}}>
+        <List sx={{display: '-webkit-box',
+          '&& .Mui-selected, && .Mui-selected:hover': {
+            bgcolor: '#2979ff',
+            '&, & .MuiListItemIcon-root': {
+              color: 'white',
+            },
+          },}}>
+          <ListItem  disablePadding>
+            <ListItemButton selected sx={{ textAlign: 'center'}} >
+              <ListItemText primary= 'Users to be verified'/>
+            </ListItemButton>
+          </ListItem>
+
+      </List>
+    </Box>
         <Box
           sx={{
             width: "auto",
             marginLeft: { xs: "50px", sm: "150px", md: "230px" },
           }}
         >
-          <h2>Users to be verified</h2>
           {users.waiting ? (
-            <CircularProgress />
+            <CircularProgress sx={{  position: 'fixed',top: '100px', right: '10px'}}/>
           ) : (
             users.userList.map((user, index) => (
               <Box key={index}>

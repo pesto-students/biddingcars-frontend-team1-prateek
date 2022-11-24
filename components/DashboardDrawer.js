@@ -44,7 +44,9 @@ export default function DashboardDrawer(props) {
         ];
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{
+      // display: "flex" ,
+    position: "sticky",top:'0' }}>
       <Drawer
         sx={{
           width: '70px',
@@ -53,7 +55,7 @@ export default function DashboardDrawer(props) {
             // width: drawerWidth,
             boxSizing: "border-box",
             marginTop: "10vh",
-            paddingTop: "5vh",
+            paddingTop: "3vh",
           }
         }}
         variant="permanent"

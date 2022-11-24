@@ -72,9 +72,9 @@ const CardDetails = () => {
     className="profile-card"
     sx={{
       // marginLeft: "226px",
-      marginLeft: { xs: "30px", sm: "150px", md: "240px" },
-      width: { xs: "95vw", sm: "50vw", md: "40vw" },
-      padding: "20px"
+      marginLeft: { xs: "60px", sm: "150px", md: "240px" },
+      width: { xs: "75vw", sm: "50vw", md: "40vw" },
+      // padding: "20px"
     }}
   >
 
@@ -121,7 +121,7 @@ const CardDetails = () => {
         onChange={handleInputChange}
       />
       <TextField
-      sx={{ mt: '10px', mr: '7px', width: { xs: "48%", sm: "48%", md: "48%" } }}
+      sx={{ mt: '10px', mr: '7px', width: { xs: "47%", sm: "48%", md: "48%" } }}
         margin="dense"
         id="outlined-basic"
         name="aadhar"
@@ -131,7 +131,7 @@ const CardDetails = () => {
         onChange={handleInputChange}
       />
       <TextField
-      sx={{ mt: '10px', ml: '7px' , width: { xs: "48%", sm: "46%", md: "49%" }}}
+      sx={{ mt: '10px', ml: '7px' , width: { xs: "47%", sm: "46%", md: "49%" }}}
         margin="dense"
         id="outlined-basic"
         name="pan"
@@ -141,7 +141,7 @@ const CardDetails = () => {
         onChange={handleInputChange}
       />
       <TextField
-      sx={{ mt: '10px', mr: '7px', width: { xs: "48%", sm: "48%", md: "48%" } }}
+      sx={{ mt: '10px', mr: '7px', width: { xs: "47%", sm: "48%", md: "48%" } }}
         margin="dense"
         id="outlined-basic"
         name="creditscore"
