@@ -54,7 +54,7 @@ export default function Verifylistings() {
           flexWrap: "wrap",
           alignItems: "center",
         }}
-      ><Box sx={{ width: "160px",marginLeft: { xs: "40px", sm: "150px", md: "230px" },marginTop:{ xs: "20px", sm: "20px", md: "0px" }}}>
+      ><Box sx={{ width: "160px",marginLeft: { xs: "40px", sm: "150px", md: "230px" },marginTop:{ xs: "0px", sm: "0px", md: "0px" }}}>
         <List sx={{display: '-webkit-box',       // selected and (selected + hover) states
     '&& .Mui-selected, && .Mui-selected:hover': {
       bgcolor: '#2979ff',
